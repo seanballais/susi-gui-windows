@@ -8,9 +8,6 @@ namespace susi_gui_windows
     {
         const string __DLL_NAME = "susi.dll";
 
-        [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-        public delegate void LoggerCallback(string message);
-
         [DllImport(__DLL_NAME)]
         public static extern void init_susi_core();
 
@@ -25,14 +22,5 @@ namespace susi_gui_windows
 
         [DllImport(__DLL_NAME)]
         public static extern Int32 get_last_error_message_length();
-
-        [DllImport(__DLL_NAME)]
-        public static extern void register_logging_functions(LoggerCallback info, LoggerCallback warning, LoggerCallback error);
-
-        [DllImport(__DLL_NAME)]
-        public static extern Int32 get_log_dir(byte[] buffer, Int32 length);
-
-        [DllImport(__DLL_NAME)]
-        public static extern Int32 get_log_dir_length();
     }
 }

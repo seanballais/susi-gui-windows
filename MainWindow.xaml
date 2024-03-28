@@ -12,6 +12,5 @@
         <TextBox x:Name="textContent"></TextBox>
         <Button x:Name="myButton" Click="myButton_Click">Click Me</Button>
         <Button x:Name="startEncryption" Click="startEncryption_Click">Start Encryption</Button>
-        <Button x:Name="getLogDirectory" Click="getLogDirectory_Click">Get Log Directory</Button>
     </StackPanel>
 </Window>

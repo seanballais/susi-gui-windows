@@ -55,10 +55,5 @@ namespace susi_gui_windows
                 FFI.queue_encryption_task(src_file, password);
             }).Start();
         }
-
-        private void getLogDirectory_Click(object sender, RoutedEventArgs e)
-        {
-            textContent.Text = $"{CoreWrapper.GetLogDir()}";
-        }
     }
 }

@@ -28,23 +28,5 @@ namespace susi_gui_windows
 
             return Encoding.UTF8.GetString(buffer).TrimEnd('\0');
         }
-
-        public static String GetLogDir()
-        {
-            Int32 logDirLength = FFI.get_log_dir_length();
-            if (logDirLength == 0)
-            {
-                return String.Empty;
-            }
-
-            byte[] buffer = new byte[logDirLength];
-            int ret = FFI.get_log_dir(buffer, buffer.Length);
-            if (ret <= 0)
-            {
-                return String.Empty;
-            }
-
-            return Encoding.UTF8.GetString(buffer).TrimEnd('\0');
-        }
     }
 }
