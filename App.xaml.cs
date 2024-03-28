@@ -36,8 +36,6 @@ namespace susi_gui_windows
         {
             this.InitializeComponent();
 
-            FFI.init_susi_core();
-
             String logDir = CoreWrapper.GetLogDir();
             String logPath = System.IO.Path.Combine(logDir, "susi-.log");
 
@@ -46,11 +44,14 @@ namespace susi_gui_windows
                 .WriteTo.File(logPath, rollingInterval: RollingInterval.Day)
                 .CreateLogger();
 
-            static void infoLogger(string message) { Log.Information(message); }
-            static void warningLogger(string message) { Log.Warning(message); }
-            static void errorLogger(string message) { Log.Error(message); }
+            this.infoLogger = (string message) => Log.Information(message);
+            this.warningLogger = (string message) => Log.Warning(message);
+            this.errorLogger = (string message) => Log.Error(message);
 
+            // Always register logging functions first before initializing Susi Core, since the FFI
+            // function logs.
             FFI.register_logging_functions(infoLogger, warningLogger, errorLogger);
+            FFI.init_susi_core();
 
             Log.Information("Registering logging callbacks to the core system");
         }
@@ -65,6 +66,9 @@ namespace susi_gui_windows
             m_window.Activate();
         }
 
+        private FFI.LoggerCallback infoLogger;
+        private FFI.LoggerCallback warningLogger;
+        private FFI.LoggerCallback errorLogger;
         private Window m_window;
     }
 }

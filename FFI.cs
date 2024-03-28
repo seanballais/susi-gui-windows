@@ -7,6 +7,8 @@ namespace susi_gui_windows
     internal class FFI
     {
         const string __DLL_NAME = "susi.dll";
+
+        [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
         public delegate void LoggerCallback(string message);
 
         [DllImport(__DLL_NAME)]
