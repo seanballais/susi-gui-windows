@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "susi-gui-windows (Package)": {
+      "commandName": "MsixPackage"
+    },
+    "susi-gui-windows (Unpackaged)": {
+      "commandName": "Project"
+    }
+  }
+}
