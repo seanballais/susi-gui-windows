@@ -1,3 +1,5 @@
+using Microsoft.UI;
+using Microsoft.UI.Windowing;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Controls.Primitives;
@@ -11,11 +13,15 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.IO.Pipes;
+using System.Runtime.CompilerServices;
 using System.Security.Principal;
 using System.Text;
 using System.Threading;
+using System.Threading.Tasks;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using WinRT;
+using WinRT.Interop;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -30,6 +36,18 @@ namespace susi_gui_windows
         public MainWindow()
         {
             this.InitializeComponent();
+
+            this.Closed += OnClosed;
+
+            this._appWindow = GetAppWindowForCurrentWindow();
+            this._appWindow.Closing += OnClosing;
+        }
+
+        private void OnClosed(object sender, WindowEventArgs e) { }
+
+        private async void OnClosing(object sender, AppWindowClosingEventArgs e)
+        {
+            this.Close();
         }
 
         private void myButton_Click(object sender, RoutedEventArgs e)
@@ -55,5 +73,14 @@ namespace susi_gui_windows
                 FFI.queue_encryption_task(src_file, password);
             }).Start();
         }
+
+        private AppWindow GetAppWindowForCurrentWindow()
+        {
+            IntPtr hWnd = WindowNative.GetWindowHandle(this);
+            WindowId myWndId = Win32Interop.GetWindowIdFromWindow(hWnd);
+            return AppWindow.GetFromWindowId(myWndId);
+        }
+
+        private AppWindow _appWindow;
     }
 }

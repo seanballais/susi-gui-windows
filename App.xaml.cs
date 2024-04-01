@@ -37,8 +37,6 @@ namespace susi_gui_windows
             this.InitializeComponent();
 
             FFI.init_susi_core();
-
-            Log.Information("Registering logging callbacks to the core system");
         }
 
         /// <summary>

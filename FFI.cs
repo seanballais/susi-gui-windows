@@ -22,5 +22,8 @@ namespace susi_gui_windows
 
         [DllImport(__DLL_NAME)]
         public static extern Int32 get_last_error_message_length();
+
+        [DllImport(__DLL_NAME)]
+        public static extern void close_worker_pool();
     }
 }

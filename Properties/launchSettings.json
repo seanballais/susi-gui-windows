@@ -1,7 +1,8 @@
 {
   "profiles": {
     "susi-gui-windows (Package)": {
-      "commandName": "MsixPackage"
+      "commandName": "MsixPackage",
+      "nativeDebugging": true
     },
     "susi-gui-windows (Unpackaged)": {
       "commandName": "Project"
