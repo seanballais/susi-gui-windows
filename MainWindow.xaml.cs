@@ -8,6 +8,7 @@ using Microsoft.UI.Xaml.Input;
 using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Navigation;
 using Serilog;
+using susi_gui_windows.Core;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -33,6 +34,9 @@ namespace susi_gui_windows
     /// </summary>
     public sealed partial class MainWindow : Window
     {
+        private AppWindow _appWindow;
+        private Core.Task _task;
+
         public MainWindow()
         {
             this.InitializeComponent();
@@ -52,11 +56,11 @@ namespace susi_gui_windows
 
         private void myButton_Click(object sender, RoutedEventArgs e)
         {
-            bool hasError = FFI.has_error();
-            if (hasError)
+            if (Error.HasError())
             {
-                textContent.Text = $"Error: {CoreWrapper.GetLastErrorMessage()}";
-            } else
+                textContent.Text = $"Error: {Error.GetLastErrorMessage()}";
+            }
+            else
             {
                 textContent.Text = "No error.";
             }
@@ -66,12 +70,9 @@ namespace susi_gui_windows
 
         private void startEncryption_Click(object sender, RoutedEventArgs e)
         {
-            new Thread(() =>
-            {
-                string src_file = "C:/Users/sean/bitmap.png";
-                string password = "heyheyheyheyhey";
-                FFI.queue_encryption_task(src_file, password);
-            }).Start();
+            string src_file = "C:/Users/sean/Packages/Shared Development Packages/All/Test Sized Files/200MB.zip";
+            string password = "heyheyheyheyhey";
+            _task = new Core.Task(TaskType.Encryption, src_file, password);
         }
 
         private AppWindow GetAppWindowForCurrentWindow()
@@ -81,6 +82,13 @@ namespace susi_gui_windows
             return AppWindow.GetFromWindowId(myWndId);
         }
 
-        private AppWindow _appWindow;
+        private void getNumReadBytes_Click(object sender, RoutedEventArgs e)
+        {
+            if (_task != null)
+            {
+                var status = _task.GetStatus();
+                textContent.Text = $"{status.numReadBytes}";
+            }
+        }
     }
 }

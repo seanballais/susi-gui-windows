@@ -12,5 +12,6 @@
         <TextBox x:Name="textContent"></TextBox>
         <Button x:Name="myButton" Click="myButton_Click">Click Me</Button>
         <Button x:Name="startEncryption" Click="startEncryption_Click">Start Encryption</Button>
+        <Button x:Name="getNumReadBytes" Click="getNumReadBytes_Click">Get Num Read Bytes</Button>
     </StackPanel>
 </Window>

@@ -17,6 +17,7 @@ using Windows.Foundation;
 using Windows.Foundation.Collections;
 
 using Serilog;
+using susi_gui_windows.Core;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -36,7 +37,7 @@ namespace susi_gui_windows
         {
             this.InitializeComponent();
 
-            FFI.init_susi_core();
+            Lib.Initialize();
         }
 
         /// <summary>
