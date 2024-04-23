@@ -2,8 +2,8 @@
 
 namespace susi_gui_windows.Core.Native
 {
-    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
-    internal struct TaskStatusNative
+    [StructLayout(LayoutKind.Sequential)]
+    public struct TaskStatusNative
     {
         public nuint numReadBytes;
         public nuint numWrittenBytes;

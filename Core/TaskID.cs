@@ -19,11 +19,14 @@ namespace susi_gui_windows.Core
 
         public static implicit operator TaskID(TaskIDWrapper id) => new TaskID(id);
 
+
         ~TaskID()
         { 
            id.Dispose();
         }
 
+        public TaskIDWrapper InternalData { get { return id; } }
+        
         public bool Equals(TaskID other)
         {
             return id.Equals(other.id);

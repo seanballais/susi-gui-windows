@@ -1,28 +1,10 @@
 using Microsoft.UI;
 using Microsoft.UI.Windowing;
 using Microsoft.UI.Xaml;
-using Microsoft.UI.Xaml.Controls;
-using Microsoft.UI.Xaml.Controls.Primitives;
-using Microsoft.UI.Xaml.Data;
-using Microsoft.UI.Xaml.Input;
-using Microsoft.UI.Xaml.Media;
-using Microsoft.UI.Xaml.Navigation;
-using Serilog;
-using susi_gui_windows.Core;
 using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.IO;
-using System.IO.Pipes;
-using System.Runtime.CompilerServices;
-using System.Security.Principal;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
-using WinRT;
 using WinRT.Interop;
+
+using susi_gui_windows.Core;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -49,7 +31,7 @@ namespace susi_gui_windows
 
         private void OnClosed(object sender, WindowEventArgs e) { }
 
-        private async void OnClosing(object sender, AppWindowClosingEventArgs e)
+        private void OnClosing(object sender, AppWindowClosingEventArgs e)
         {
             this.Close();
         }
@@ -64,8 +46,6 @@ namespace susi_gui_windows
             {
                 textContent.Text = "No error.";
             }
-
-            Log.Information("Testing things out");
         }
 
         private void startEncryption_Click(object sender, RoutedEventArgs e)
@@ -87,7 +67,13 @@ namespace susi_gui_windows
             if (_task != null)
             {
                 var status = _task.GetStatus();
-                textContent.Text = $"{status.numReadBytes}";
+                if (status == null)
+                {
+                    textContent.Text = "None";
+                } else
+                {
+                    textContent.Text = $"{status.Progress} | Read Bytes: {status.NumReadBytes} | Error: {status.LastError}";
+                }
             }
         }
     }

@@ -13,18 +13,18 @@ namespace susi_gui_windows.Core.Native
 
         private bool isDisposed;
 
-        public TaskIDWrapper(TaskIDNative MarshalledData, IntPtr Pointer)
+        public TaskIDWrapper(TaskIDNative marshalledData, IntPtr ptr)
         {
-            this.MarshalledData = MarshalledData;
-            this.Pointer = Pointer;
+            this.MarshalledData = marshalledData;
+            this.Pointer = ptr;
             this.isDisposed = false;
         }
 
         public void Dispose()
         {
-            if (isDisposed) return;
+            if (isDisposed) { return; }
 
-            TaskFFI.dropTaskID(this);
+            TaskFFI.DropTaskID(this);
 
             isDisposed = true;
         }

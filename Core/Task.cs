@@ -10,14 +10,22 @@ namespace susi_gui_windows.Core
 
         public Task(TaskType type, string target_file, string password)
         {
-            this.id = TaskFFI.queueEncryptionTask(target_file, password);
+            this.id = TaskFFI.QueueEncryptionTask(target_file, password);
         }
 
-        // TODO: Use a public access modifier here after making a C# wrapper for TaskStatusNative.
-        internal Native.TaskStatusNative GetStatus()
+        public TaskStatus GetStatus()
         {
-            var ptr = Native.TaskFFI.get_task_status(id.Pointer);
-            return Marshal.PtrToStructure<TaskStatusNative>(ptr);
+            TaskStatus status;
+            try
+            {
+                status = TaskFFI.GetTaskStatus(id.InternalData);
+            }
+            catch (NullFFIPointerException)
+            {
+                status = null;
+            }
+
+            return status;
         }
     }
 }
