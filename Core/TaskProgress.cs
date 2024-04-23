@@ -9,8 +9,10 @@ namespace susi_gui_windows.Core
     public enum TaskProgress
     {
         Queued,
-        Running,
+        Processing,
+        Finalizing,
         Done,
-        Failed
+        Failed,
+        Interrupted
     }
 }

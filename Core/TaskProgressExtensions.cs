@@ -1,5 +1,6 @@
 ﻿using susi_gui_windows.Core.Native;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,10 +12,12 @@ namespace susi_gui_windows.Core
     {
         public static TaskProgress FromTaskProgressNative(TaskProgressNative nativeProgress) => nativeProgress switch
         {
-            TaskProgressNative.Queued  => TaskProgress.Queued,
-            TaskProgressNative.Running => TaskProgress.Running,
-            TaskProgressNative.Failed  => TaskProgress.Failed,
-            TaskProgressNative.Done    => TaskProgress.Done,
+            TaskProgressNative.Queued      => TaskProgress.Queued,
+            TaskProgressNative.Processing  => TaskProgress.Processing,
+            TaskProgressNative.Finalizing  => TaskProgress.Finalizing,
+            TaskProgressNative.Done        => TaskProgress.Done,
+            TaskProgressNative.Failed      => TaskProgress.Failed,
+            TaskProgressNative.Interrupted => TaskProgress.Interrupted,
             _ => throw new ArgumentOutOfRangeException(nameof(nativeProgress), $"TaskProgress value not expected: {nativeProgress}"),
         };        
     }

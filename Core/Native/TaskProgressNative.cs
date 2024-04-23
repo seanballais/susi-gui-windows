@@ -9,8 +9,10 @@ namespace susi_gui_windows.Core.Native
     public enum TaskProgressNative : UInt32
     {
         Queued,
-        Running,
+        Processing,
+        Finalizing,
         Done,
-        Failed
+        Failed,
+        Interrupted
     }
 }
