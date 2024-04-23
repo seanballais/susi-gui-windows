@@ -6,7 +6,7 @@ namespace susi_gui_windows.Core
 {
     public class Task
     {
-        private TaskIDWrapper id;
+        private TaskID id;
 
         public Task(TaskType type, string target_file, string password)
         {

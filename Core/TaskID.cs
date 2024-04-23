@@ -8,27 +8,25 @@ using System.Threading.Tasks;
 
 namespace susi_gui_windows.Core
 {
-    public class TaskID : IEquatable<TaskID>, IDisposable
+    public sealed class TaskID : IEquatable<TaskID>
     {
-        private readonly IntPtr ptr;
-        private readonly TaskIDNative internalID;
+        private readonly TaskIDWrapper id;
 
-        public TaskID(IntPtr ptr)
+        public TaskID(TaskIDWrapper wrapper)
         {
-            if (ptr == IntPtr.Zero) { throw new ArgumentNullException(nameof(ptr)); }
+            id = wrapper;
+        }
 
-            this.internalID = Marshal.PtrToStructure<TaskIDNative>(ptr);
-            this.ptr = ptr;
+        public static implicit operator TaskID(TaskIDWrapper id) => new TaskID(id);
+
+        ~TaskID()
+        { 
+           id.Dispose();
         }
 
         public bool Equals(TaskID other)
         {
-            return internalID == other.internalID;
-        }
-
-        public void Dispose()
-        {
-            Native.TaskFFI.drop_task_id(ptr);
+            return id.Equals(other.id);
         }
     }
 }

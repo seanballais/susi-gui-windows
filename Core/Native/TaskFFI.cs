@@ -21,6 +21,11 @@ namespace susi_gui_windows.Core.Native
             return new TaskIDWrapper(taskID, ptr);
         }
 
+        public static void dropTaskID(TaskIDWrapper taskID)
+        {
+            drop_task_id(taskID.Pointer);
+        }
+
         [DllImport(Constants.CoreDLLName)]
         private static extern IntPtr queue_encryption_task(string target_file, string password);
 
@@ -31,6 +36,6 @@ namespace susi_gui_windows.Core.Native
         public static extern void drop_task_status(IntPtr status);
 
         [DllImport(Constants.CoreDLLName)]
-        public static extern void drop_task_id(IntPtr id);
+        private static extern void drop_task_id(IntPtr id);
     }
 }

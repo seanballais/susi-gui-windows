@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace susi_gui_windows.Core.Native
 {
     [StructLayout(LayoutKind.Sequential)]
-    internal class TaskIDNative
+    public class TaskIDNative
     {
         public ulong upperID;
         public ulong lowerID;
