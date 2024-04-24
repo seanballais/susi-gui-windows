@@ -1,11 +1,9 @@
 ﻿using System;
 using System.IO;
 using Microsoft.UI.Xaml;
-using Microsoft.Windows.AppNotifications;
-using Microsoft.Windows.AppNotifications.Builder;
+using Microsoft.Windows.AppLifecycle;
 using susi_gui_windows.Core;
 using susi_gui_windows.OS;
-using WinRT.Interop;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -34,7 +32,7 @@ namespace susi_gui_windows
         /// Invoked when the application is launched.
         /// </summary>
         /// <param name="args">Details about the launch request and process.</param>
-        protected override async void OnLaunched(Microsoft.UI.Xaml.LaunchActivatedEventArgs args)
+        protected override async void OnLaunched(LaunchActivatedEventArgs args)
         {
             // Based on: https://gist.github.com/andrewleader/5adc742fe15b06576c1973ea6e999552
             var activationArgs = Microsoft.Windows.AppLifecycle.AppInstance.GetCurrent().GetActivatedEventArgs();
@@ -68,7 +66,7 @@ namespace susi_gui_windows
             mainWindow.Activate();
         }
 
-        private void App_Activated(object sender, Microsoft.Windows.AppLifecycle.AppActivationArguments args)
+        private void App_Activated(object sender, AppActivationArguments args)
         {
             // Based on: https://github.com/microsoft/microsoft-ui-xaml/issues/7595#issuecomment-1514604263
             var windowHandle = WindowHandle.GetFromWindow(mainWindow);
