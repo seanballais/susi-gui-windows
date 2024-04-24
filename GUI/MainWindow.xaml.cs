@@ -16,8 +16,8 @@ namespace susi_gui_windows
     /// </summary>
     public sealed partial class MainWindow : Window
     {
-        private AppWindow _appWindow;
-        private Core.Task _task;
+        private AppWindow appWindow;
+        private Core.Task task;
 
         public MainWindow()
         {
@@ -25,8 +25,8 @@ namespace susi_gui_windows
 
             this.Closed += OnClosed;
 
-            this._appWindow = GetAppWindowForCurrentWindow();
-            this._appWindow.Closing += OnClosing;
+            this.appWindow = GetAppWindowForCurrentWindow();
+            this.appWindow.Closing += OnClosing;
         }
 
         private void OnClosed(object sender, WindowEventArgs e) { }
@@ -52,7 +52,7 @@ namespace susi_gui_windows
         {
             string src_file = "C:/Users/sean/Packages/Shared Development Packages/All/Test Sized Files/200MB.zip";
             string password = "heyheyheyheyhey";
-            _task = new Core.Task(TaskType.Encryption, src_file, password);
+            task = new Core.Task(TaskType.Encryption, src_file, password);
         }
 
         private AppWindow GetAppWindowForCurrentWindow()
@@ -64,9 +64,9 @@ namespace susi_gui_windows
 
         private void getNumReadBytes_Click(object sender, RoutedEventArgs e)
         {
-            if (_task != null)
+            if (task != null)
             {
-                var status = _task.GetStatus();
+                var status = task.GetStatus();
                 if (status == null)
                 {
                     textContent.Text = "None";

@@ -4,10 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace susi_gui_windows.Core.Native
+namespace susi_gui_windows.OS
 {
-    internal class Constants
+    public enum ShowWindowResult
     {
-        public const string CoreDLLName = "susi_core.dll";
+        PreviouslyVisible,
+        PreviouslyHidden
     }
 }
