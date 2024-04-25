@@ -156,6 +156,11 @@ DWORD CExplorerCommandLock::_ThreadProc()
 
 				MessageBox(_hwnd, szMsg, L"ExplorerCommand Lock", MB_OK);
 
+				WCHAR szAnotherMsg[255];
+				StringCchPrintf(szAnotherMsg, ARRAYSIZE(szAnotherMsg), L"DLL Folder Path: %s", getDLLFolderPath().c_str());
+
+				MessageBox(_hwnd, szAnotherMsg, L"Test", MB_OK);
+
 				CoTaskMemFree(pszName);
 			}
 

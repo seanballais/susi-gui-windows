@@ -10,6 +10,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "susi-gui-windows", "susi-gu
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ShellExtension", "ShellExtension\ShellExtension.vcxproj", "{F495F20B-4808-41A4-9E6F-31C66B514538}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{994EB8B5-6CEF-41B3-8300-2466621C2050}"
+	ProjectSection(SolutionItems) = preProject
+		THIRD-PARTY-LICENSES.txt = THIRD-PARTY-LICENSES.txt
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64

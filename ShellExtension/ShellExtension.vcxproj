@@ -76,6 +76,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableUAC>false</EnableUAC>
       <AdditionalDependencies>shlwapi.lib;comctl32.lib;propsys.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <ModuleDefinitionFile>dll.def</ModuleDefinitionFile>
     </Link>
     <PostBuildEvent>
       <Command>xcopy "$(TargetPath)" "$(SolutionDir)$(TargetFileName)" /y</Command>
@@ -101,6 +102,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableUAC>false</EnableUAC>
       <AdditionalDependencies>shlwapi.lib;comctl32.lib;propsys.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <ModuleDefinitionFile>dll.def</ModuleDefinitionFile>
     </Link>
     <PostBuildEvent>
       <Command>xcopy "$(TargetPath)" "$(SolutionDir)$(TargetFileName)" /y</Command>
