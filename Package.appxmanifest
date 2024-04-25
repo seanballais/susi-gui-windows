@@ -3,12 +3,16 @@
 <Package
   xmlns="http://schemas.microsoft.com/appx/manifest/foundation/windows10"
   xmlns:mp="http://schemas.microsoft.com/appx/2014/phone/manifest"
+  xmlns:com="http://schemas.microsoft.com/appx/manifest/com/windows10"
+  xmlns:desktop="http://schemas.microsoft.com/appx/manifest/desktop/windows10"
+  xmlns:desktop4="http://schemas.microsoft.com/appx/manifest/desktop/windows10/4"
+  xmlns:desktop5="http://schemas.microsoft.com/appx/manifest/desktop/windows10/5"
   xmlns:uap="http://schemas.microsoft.com/appx/manifest/uap/windows10"
   xmlns:uap2="http://schemas.microsoft.com/appx/manifest/uap/windows10/2"
   xmlns:uap3="http://schemas.microsoft.com/appx/manifest/uap/windows10/3"
   xmlns:uap10="http://schemas.microsoft.com/appx/manifest/uap/windows10/10"
   xmlns:rescap="http://schemas.microsoft.com/appx/manifest/foundation/windows10/restrictedcapabilities"
-  IgnorableNamespaces="uap uap2 uap3 uap10 rescap">
+  IgnorableNamespaces="com desktop desktop4 desktop5 uap uap2 uap3 uap10 rescap">
 
   <Identity
     Name="c929009c-b0dd-4a96-a0e1-9e008a0ea53b"
@@ -55,7 +59,21 @@
 			  <uap3:Verb Id="Unlock" Parameters="--unlock &quot;%1&quot;">Unlock File</uap3:Verb>
 			</uap2:SupportedVerbs>
 		  </uap3:FileTypeAssociation>
-		</uap3:Extension>	
+		</uap3:Extension>
+		<com:Extension Category="windows.comServer">
+		  <com:ComServer>
+			<com:SurrogateServer DisplayName="ContextMenu">
+			  <com:Class Id="D56A16FE-D6DD-41A4-A2E1-08C05AB083C7" Path="ShellExtension.dll" ThreadingModel="STA" />
+			</com:SurrogateServer>
+		  </com:ComServer>
+		</com:Extension>
+		<desktop4:Extension Category="windows.fileExplorerContextMenus">
+		  <desktop4:FileExplorerContextMenus>
+			<desktop5:ItemType Type="*">
+				<desktop5:Verb Id="LockCommand" Clsid="D56A16FE-D6DD-41A4-A2E1-08C05AB083C7" />
+			</desktop5:ItemType>
+		  </desktop4:FileExplorerContextMenus>
+		</desktop4:Extension>
 	  </Extensions>
     </Application>
   </Applications>

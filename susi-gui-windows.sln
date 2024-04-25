@@ -4,6 +4,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 17.9.34622.214
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "susi-gui-windows", "susi-gui-windows.csproj", "{C11137C5-E91D-485B-A9F5-1783F6668CA9}"
+	ProjectSection(ProjectDependencies) = postProject
+		{F495F20B-4808-41A4-9E6F-31C66B514538} = {F495F20B-4808-41A4-9E6F-31C66B514538}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ShellExtension", "ShellExtension\ShellExtension.vcxproj", "{F495F20B-4808-41A4-9E6F-31C66B514538}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -17,6 +22,10 @@ Global
 		{C11137C5-E91D-485B-A9F5-1783F6668CA9}.Release|x64.ActiveCfg = Release|x64
 		{C11137C5-E91D-485B-A9F5-1783F6668CA9}.Release|x64.Build.0 = Release|x64
 		{C11137C5-E91D-485B-A9F5-1783F6668CA9}.Release|x64.Deploy.0 = Release|x64
+		{F495F20B-4808-41A4-9E6F-31C66B514538}.Debug|x64.ActiveCfg = Debug|x64
+		{F495F20B-4808-41A4-9E6F-31C66B514538}.Debug|x64.Build.0 = Debug|x64
+		{F495F20B-4808-41A4-9E6F-31C66B514538}.Release|x64.ActiveCfg = Release|x64
+		{F495F20B-4808-41A4-9E6F-31C66B514538}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
