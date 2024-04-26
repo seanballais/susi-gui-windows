@@ -39,7 +39,7 @@ inline std::wstring getModuleFolderPath(HMODULE module = nullptr)
 //                             /Windows-AppConsult-Samples-DesktopBridge
 //                             /blob/main/Docs-ContextMenuSample
 //                             /ExplorerCommandVerb/ShellHelpers.h
-__inline HRESULT GetItemAt(IShellItemArray* psia, DWORD i, REFIID riid, void** ppv)
+__inline HRESULT GetShellItemFromArrayAt(IShellItemArray* psia, DWORD i, REFIID riid, void** ppv)
 {
 	*ppv = NULL;
 	IShellItem* psi = NULL;

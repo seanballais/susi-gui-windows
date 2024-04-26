@@ -145,27 +145,25 @@ DWORD CExplorerCommandLock::_ThreadProc()
 		DWORD count;
 		psia->GetCount(&count);
 
-		IShellItem2* psi;
-		HRESULT hr = GetItemAt(psia, 0, IID_PPV_ARGS(&psi));
-		if (SUCCEEDED(hr)) {
-			PWSTR pszName;
-			hr = psi->GetDisplayName(SIGDN_DESKTOPABSOLUTEPARSING, &pszName);
+		std::wstring selectedFilenames = L"";
+		for (int i = 0; i < count; i++) {
+			IShellItem* psi;
+			HRESULT hr = GetShellItemFromArrayAt(psia, i, IID_PPV_ARGS(&psi));
 			if (SUCCEEDED(hr)) {
-				WCHAR szMsg[128];
-				StringCchPrintf(szMsg, ARRAYSIZE(szMsg), L"%d item(s), first item is named %s", count, pszName);
-
-				MessageBox(_hwnd, szMsg, L"ExplorerCommand Lock", MB_OK);
-
-				WCHAR szAnotherMsg[255];
-				StringCchPrintf(szAnotherMsg, ARRAYSIZE(szAnotherMsg), L"DLL Folder Path: %s", getDLLFolderPath().c_str());
-
-				MessageBox(_hwnd, szAnotherMsg, L"Test", MB_OK);
-
-				CoTaskMemFree(pszName);
+				PWSTR pszName;
+				hr = psi->GetDisplayName(SIGDN_DESKTOPABSOLUTEPARSING, &pszName);
+				if (SUCCEEDED(hr)) {
+					selectedFilenames.append(pszName);
+					selectedFilenames.append(L", ");
+				}
 			}
 
 			psi->Release();
 		}
+
+		std::wstring exePath = getDLLFolderPath();
+		exePath.append(L"\\Susi.exe");
+		ShellExecute(_hwnd, L"open", exePath.c_str(), NULL, getDLLFolderPath().c_str(), SW_SHOW);
 
 		psia->Release();
 	}
