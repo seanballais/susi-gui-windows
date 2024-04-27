@@ -12,10 +12,14 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dll.cpp" />
+    <ClCompile Include="ipc.cpp" />
     <ClCompile Include="LockCommand.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="dll.hpp" />
+    <ClInclude Include="ipc.hpp" />
+    <ClInclude Include="ffi.hpp" />
+    <ClInclude Include="logging.hpp" />
     <ClInclude Include="utils.hpp" />
   </ItemGroup>
   <ItemGroup>
@@ -75,7 +79,7 @@
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableUAC>false</EnableUAC>
-      <AdditionalDependencies>shlwapi.lib;comctl32.lib;propsys.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>shlwapi.lib;comctl32.lib;propsys.lib;"$(SolutionDir)susi_core.dll.lib";%(AdditionalDependencies)</AdditionalDependencies>
       <ModuleDefinitionFile>dll.def</ModuleDefinitionFile>
     </Link>
     <PostBuildEvent>
@@ -101,7 +105,7 @@
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableUAC>false</EnableUAC>
-      <AdditionalDependencies>shlwapi.lib;comctl32.lib;propsys.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>shlwapi.lib;comctl32.lib;propsys.lib;"$(SolutionDir)susi_core.dll.lib";%(AdditionalDependencies)</AdditionalDependencies>
       <ModuleDefinitionFile>dll.def</ModuleDefinitionFile>
     </Link>
     <PostBuildEvent>

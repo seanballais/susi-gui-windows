@@ -396,3 +396,9 @@ FodyWeavers.xsd
 
 # JetBrains Rider
 *.sln.iml
+
+# Binaries and build artifacts.
+bin/
+obj/
+susi_core.dll
+susi_core.dll.lib

@@ -1,12 +1,11 @@
 ﻿using System;
 using System.IO;
+using System.IO.Pipes;
+using System.Security.Principal;
 using Microsoft.UI.Xaml;
 using Microsoft.Windows.AppLifecycle;
 using susi_gui_windows.Core;
 using susi_gui_windows.OS;
-
-// To learn more about WinUI, the WinUI project structure,
-// and more about our project templates, see: http://aka.ms/winui-project-info.
 
 namespace susi_gui_windows
 {
@@ -15,7 +14,7 @@ namespace susi_gui_windows
     /// </summary>
     public partial class App : Application
     {
-        private Window mainWindow;
+        private MainWindow mainWindow;
 
         /// <summary>
         /// Initializes the singleton application object.  This is the first line of authored code
@@ -46,11 +45,6 @@ namespace susi_gui_windows
             // Check if our current instance is the main instance. If it's not, we bounce.
             if (!instance.IsCurrent)
             {
-                using (StreamWriter outputFile = new StreamWriter("C:/Users/sean/log.txt", true))
-                {
-                    outputFile.WriteLine($"{activationArgs.GetType()}");
-                }
-
                 // Redirect activation to the main instance.
                 await instance.RedirectActivationToAsync(activationArgs);
 
@@ -64,6 +58,10 @@ namespace susi_gui_windows
 
             mainWindow = new MainWindow();
             mainWindow.Activate();
+
+            var pipeClient = new PipeClient();
+            pipeClient.Start(mainWindow.SetText);
+            pipeClient.Listen(mainWindow.SetText);
         }
 
         private void App_Activated(object sender, AppActivationArguments args)

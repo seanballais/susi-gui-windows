@@ -7,9 +7,7 @@
 
 #include "dll.hpp"
 
-// The following uses the Win32 API. So, we're just using the project's C++
-// coding guidelines for non-COM uses.
-inline std::wstring getModuleFolderPath(HMODULE module = nullptr)
+inline std::wstring GetModuleFolderPath(HMODULE module = nullptr)
 {
 	wchar_t buffer[MAX_PATH + 1];
 	DWORD actualLength = GetModuleFileNameW(module, buffer, MAX_PATH);
@@ -69,7 +67,7 @@ template <class T> HRESULT SetInterface(T** ppT, IUnknown* punk)
 }
 
 // The following now are our custom functions.
-inline std::wstring getDLLFolderPath()
+inline std::wstring GetDLLFolderPath()
 {
-	return getModuleFolderPath(g_hInst);
+	return GetModuleFolderPath(g_hInst);
 }

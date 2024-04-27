@@ -5,6 +5,7 @@ using System;
 using WinRT.Interop;
 
 using susi_gui_windows.Core;
+using System.Linq;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -18,6 +19,7 @@ namespace susi_gui_windows
     {
         private AppWindow appWindow;
         private Core.Task task;
+        private string arguments;
 
         public MainWindow()
         {
@@ -29,6 +31,11 @@ namespace susi_gui_windows
             this.appWindow.Closing += OnClosing;
         }
 
+        public void SetText(string str)
+        {
+            arguments = str;
+        }
+
         private void OnClosed(object sender, WindowEventArgs e) { }
 
         private void OnClosing(object sender, AppWindowClosingEventArgs e)
@@ -38,14 +45,7 @@ namespace susi_gui_windows
 
         private void myButton_Click(object sender, RoutedEventArgs e)
         {
-            if (Error.HasError())
-            {
-                textContent.Text = $"Error: {Error.GetLastErrorMessage()}";
-            }
-            else
-            {
-                textContent.Text = "No error.";
-            }
+            textContent.Text = arguments;
         }
 
         private void startEncryption_Click(object sender, RoutedEventArgs e)

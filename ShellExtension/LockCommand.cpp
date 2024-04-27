@@ -1,11 +1,16 @@
 #include <new>
+#include <thread>
 
+#include <atlfile.h>
+#include <atlstr.h>
 #include <ShlObj.h>
 #include <Shlwapi.h>
 #include <strsafe.h>
 #include <Windows.h>
 
 #include "dll.hpp"
+#include "logging.hpp"
+#include "ipc.hpp"
 #include "utils.hpp"
 
 static WCHAR const c_szVerbDisplayName[] = L"Lock File";
@@ -142,28 +147,39 @@ DWORD CExplorerCommandLock::_ThreadProc()
 	HRESULT hr = CoGetInterfaceAndReleaseStream(_pstmShellItemArray, IID_PPV_ARGS(&psia));
 	_pstmShellItemArray = NULL;
 	if (SUCCEEDED(hr)) {
-		DWORD count;
-		psia->GetCount(&count);
+		std::wstring exePath = GetDLLFolderPath();
+		exePath.append(L"\\Susi.exe");
 
-		std::wstring selectedFilenames = L"";
-		for (int i = 0; i < count; i++) {
-			IShellItem* psi;
-			HRESULT hr = GetShellItemFromArrayAt(psia, i, IID_PPV_ARGS(&psi));
-			if (SUCCEEDED(hr)) {
-				PWSTR pszName;
-				hr = psi->GetDisplayName(SIGDN_DESKTOPABSOLUTEPARSING, &pszName);
+		HANDLE handlePipe = INVALID_HANDLE_VALUE;
+		std::wstring pipeName(L"\\\\.\\pipe\\susi-FD2694FA-4BB3-4ABD-8CF7-0CCCAFA32347");
+
+		auto pipe_creation_thread = std::thread(&CreateNamedPipeServerAndWaitForConns, handlePipe, pipeName);
+		logInfo(L"Creating pipe server.");
+		ShellExecute(_hwnd, L"open", exePath.c_str(), NULL, GetDLLFolderPath().c_str(), SW_SHOW);
+		pipe_creation_thread.join();
+
+		if (handlePipe != INVALID_HANDLE_VALUE) {
+			CAtlFile writePipe(handlePipe);
+
+			DWORD count;
+			psia->GetCount(&count);
+			for (DWORD i = 0; i < count; i++) {
+				IShellItem* psi;
+				HRESULT hr = GetShellItemFromArrayAt(psia, i, IID_PPV_ARGS(&psi));
 				if (SUCCEEDED(hr)) {
-					selectedFilenames.append(pszName);
-					selectedFilenames.append(L", ");
+					LPWSTR pszName;
+					hr = psi->GetDisplayName(SIGDN_DESKTOPABSOLUTEPARSING, &pszName);
+					if (SUCCEEDED(hr)) {
+						CString fileName(pszName);
+						writePipe.Write(fileName, fileName.GetLength() * sizeof(TCHAR));
+					}
 				}
+
+				psi->Release();
 			}
 
-			psi->Release();
+			writePipe.Close();
 		}
-
-		std::wstring exePath = getDLLFolderPath();
-		exePath.append(L"\\Susi.exe");
-		ShellExecute(_hwnd, L"open", exePath.c_str(), NULL, getDLLFolderPath().c_str(), SW_SHOW);
 
 		psia->Release();
 	}
@@ -189,6 +205,8 @@ IFACEMETHODIMP CExplorerCommandLock::Invoke(IShellItemArray* psia, IBindCtx* /* 
 
 HRESULT CExplorerCommandLock_CreateInstance(REFIID riid, void** ppv)
 {
+	initLogging();
+
 	*ppv = NULL;
 	CExplorerCommandLock* pLock = new (std::nothrow) CExplorerCommandLock();
 	HRESULT hr = pLock ? S_OK : E_OUTOFMEMORY;
