@@ -1,14 +1,15 @@
+#pragma once
+
 #include <codecvt>
 #include <format>
 #include <locale>
 #include <string>
 
-#pragma once
+#include <Windows.h>
+
 #include "ffi.hpp"
 
-void initLogging() {
-	init_logging();
-}
+void initLogging();
 
 template<class... Args>
 void logInfo(std::wformat_string<Args...> fmt, Args&&... args)

@@ -59,9 +59,8 @@ namespace susi_gui_windows
             mainWindow = new MainWindow();
             mainWindow.Activate();
 
-            var pipeClient = new PipeClient();
-            pipeClient.Start(mainWindow.SetText);
-            pipeClient.Listen(mainWindow.SetText);
+            var pipeClient = new PipeClient(mainWindow.SetText);
+            pipeClient.Start();
         }
 
         private void App_Activated(object sender, AppActivationArguments args)

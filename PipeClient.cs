@@ -1,42 +1,47 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.IO.Pipes;
-using System.Linq;
 using System.Security.Principal;
-using System.Text;
-using System.Threading.Tasks;
+using System.Threading;
+
+using susi_gui_windows.Core;
 
 namespace susi_gui_windows
 {
     internal class PipeClient
     {
         private readonly NamedPipeClientStream pipeClient;
+        private Action<string> callback;
+        private Thread thread;
 
-        public PipeClient()
+        public PipeClient(Action<string> callback)
         {
             pipeClient = new NamedPipeClientStream(
                 ".",
-                "\\\\.\\pipe\\susi-FD2694FA-4BB3-4ABD-8CF7-0CCCAFA32347",
+                "susi-FD2694FA-4BB3-4ABD-8CF7-0CCCAFA32347",
                 PipeDirection.In,
                 PipeOptions.Asynchronous,
                 TokenImpersonationLevel.Impersonation
             );
+            this.callback = callback;
+            thread = new Thread(new ThreadStart(this.RunTask));
         }
 
-        public void Start(Action<string> callback)
+        public void Start()
+        {
+            thread.Start();
+        }
+
+        private void RunTask()
         {
             pipeClient.Connect();
-            callback($"Pipeline Connected: {pipeClient.IsConnected}");
-        }
 
-        public async void Listen(Action<string> callback)
-        {
             var reader = new StreamReader(pipeClient);
             while (true)
             {
-                string data = await reader.ReadLineAsync();
-                callback(data);
+                char[] buffer = new char[1024];
+                int numRead = reader.ReadBlock(buffer, 0, 1023);
+                Logging.Info($"Received data: {numRead}");
             }
         }
     }

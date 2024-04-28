@@ -24,6 +24,9 @@
     <ClCompile Include="ipc.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="logging.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="dll.hpp">

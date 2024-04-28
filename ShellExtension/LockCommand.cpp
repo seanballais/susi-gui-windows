@@ -20,7 +20,13 @@ class CExplorerCommandLock : public IExplorerCommand,
 	public IObjectWithSite
 {
 public:
-	CExplorerCommandLock() : _cRef(1), _punkSite(NULL), _hwnd(NULL), _pstmShellItemArray(NULL)
+	CExplorerCommandLock()
+		: _cRef(1)
+		, _punkSite(NULL)
+		, _hwnd(NULL)
+		, _pstmShellItemArray(NULL)
+		, _pipeServerHandle(INVALID_HANDLE_VALUE)
+		, _pipeName(L"\\\\.\\pipe\\susi-FD2694FA-4BB3-4ABD-8CF7-0CCCAFA32347")
 	{
 		DllAddRef();
 	}
@@ -126,6 +132,8 @@ private:
 
 	DWORD _ThreadProc();
 
+	HRESULT CreateNamedPipeServerAndWaitForConns();
+
 	static DWORD __stdcall s_ThreadProc(void* pl)
 	{
 		CExplorerCommandLock* pecl = (CExplorerCommandLock*) pl;
@@ -139,6 +147,8 @@ private:
 	IUnknown* _punkSite;
 	HWND _hwnd;
 	IStream* _pstmShellItemArray;
+	HANDLE _pipeServerHandle;
+	std::wstring _pipeName;
 };
 
 DWORD CExplorerCommandLock::_ThreadProc()
@@ -150,28 +160,31 @@ DWORD CExplorerCommandLock::_ThreadProc()
 		std::wstring exePath = GetDLLFolderPath();
 		exePath.append(L"\\Susi.exe");
 
-		HANDLE handlePipe = INVALID_HANDLE_VALUE;
-		std::wstring pipeName(L"\\\\.\\pipe\\susi-FD2694FA-4BB3-4ABD-8CF7-0CCCAFA32347");
-
-		auto pipe_creation_thread = std::thread(&CreateNamedPipeServerAndWaitForConns, handlePipe, pipeName);
-		logInfo(L"Creating pipe server.");
+		auto pipe_creation_thread = std::thread(&CExplorerCommandLock::CreateNamedPipeServerAndWaitForConns, this);
+		logInfo(L"Creating pipe server...");
 		ShellExecute(_hwnd, L"open", exePath.c_str(), NULL, GetDLLFolderPath().c_str(), SW_SHOW);
 		pipe_creation_thread.join();
 
-		if (handlePipe != INVALID_HANDLE_VALUE) {
-			CAtlFile writePipe(handlePipe);
+		if (_pipeServerHandle != INVALID_HANDLE_VALUE) {
+			logInfo(L"Pipe server ready.");
+			CAtlFile writePipe(_pipeServerHandle);
 
 			DWORD count;
 			psia->GetCount(&count);
+			logInfo(L"Number of files selected: {}", count);
 			for (DWORD i = 0; i < count; i++) {
 				IShellItem* psi;
 				HRESULT hr = GetShellItemFromArrayAt(psia, i, IID_PPV_ARGS(&psi));
 				if (SUCCEEDED(hr)) {
 					LPWSTR pszName;
 					hr = psi->GetDisplayName(SIGDN_DESKTOPABSOLUTEPARSING, &pszName);
+					logInfo(L"Currently selected file: {}", pszName);
 					if (SUCCEEDED(hr)) {
 						CString fileName(pszName);
-						writePipe.Write(fileName, fileName.GetLength() * sizeof(TCHAR));
+						HRESULT hr = writePipe.Write(fileName, fileName.GetLength() * sizeof(TCHAR));
+						if (SUCCEEDED(hr)) {
+							logInfo(L"Wrote '{}' to pipe.", pszName);
+						}
 					}
 				}
 
@@ -198,6 +211,42 @@ IFACEMETHODIMP CExplorerCommandLock::Invoke(IShellItemArray* psia, IBindCtx* /* 
 		if (!SHCreateThread(s_ThreadProc, this, CTF_COINIT_STA | CTF_PROCESS_REF, NULL)) {
 			Release();
 		}
+	}
+
+	return S_OK;
+}
+
+// Based on: https://github.com/microsoft
+//							   /PowerToys
+//							   /blob/main/src/modules
+//							   /powerrename/PowerRenameContextMenu/dllmain.cpp
+//      and: https://bloomfield.online/posts/introduction-to-win32-named-pipes-cpp/
+HRESULT CExplorerCommandLock::CreateNamedPipeServerAndWaitForConns()
+{
+	_pipeServerHandle = CreateNamedPipe(
+		_pipeName.c_str(),
+		PIPE_ACCESS_OUTBOUND,
+		PIPE_TYPE_MESSAGE | PIPE_WAIT,
+		PIPE_UNLIMITED_INSTANCES,
+		PIPE_BUFFER_SIZE,
+		PIPE_BUFFER_SIZE,
+		0,
+		NULL
+	);
+
+	if (_pipeServerHandle == NULL || _pipeServerHandle == INVALID_HANDLE_VALUE) {
+		return E_FAIL;
+	}
+
+	BOOL isClientConnected = ConnectNamedPipe(_pipeServerHandle, NULL);
+	if (!isClientConnected) {
+		if (GetLastError() == ERROR_PIPE_CONNECTED) {
+			return S_OK;
+		}
+		else {
+			CloseHandle(_pipeServerHandle);
+		}
+		return E_FAIL;
 	}
 
 	return S_OK;
