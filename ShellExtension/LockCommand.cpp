@@ -10,8 +10,9 @@
 
 #include "dll.hpp"
 #include "logging.hpp"
-#include "ipc.hpp"
 #include "utils.hpp"
+
+#define PIPE_BUFFER_SIZE 4096 * 4
 
 static WCHAR const c_szVerbDisplayName[] = L"Lock File";
 
@@ -171,16 +172,21 @@ DWORD CExplorerCommandLock::_ThreadProc()
 
 			DWORD count;
 			psia->GetCount(&count);
-			logInfo(L"Number of files selected: {}", count);
+			logInfo(L"Number of files selected for locking: {}", count);
 			for (DWORD i = 0; i < count; i++) {
 				IShellItem* psi;
 				HRESULT hr = GetShellItemFromArrayAt(psia, i, IID_PPV_ARGS(&psi));
 				if (SUCCEEDED(hr)) {
 					LPWSTR pszName;
 					hr = psi->GetDisplayName(SIGDN_DESKTOPABSOLUTEPARSING, &pszName);
-					logInfo(L"Currently selected file: {}", pszName);
+					logInfo(L"Currently selected file for locking: {}", pszName);
 					if (SUCCEEDED(hr)) {
 						CString fileName(pszName);
+						
+						// Let's a delimiter to help us separate files later on. We're gonna use
+						// `|` since it's an illegal character in paths.
+						fileName.Append(_T("|"));
+
 						HRESULT hr = writePipe.Write(fileName, fileName.GetLength() * sizeof(TCHAR));
 						if (SUCCEEDED(hr)) {
 							logInfo(L"Wrote '{}' to pipe.", pszName);

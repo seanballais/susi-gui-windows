@@ -12,13 +12,11 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dll.cpp" />
-    <ClCompile Include="ipc.cpp" />
     <ClCompile Include="LockCommand.cpp" />
     <ClCompile Include="logging.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="dll.hpp" />
-    <ClInclude Include="ipc.hpp" />
     <ClInclude Include="ffi.hpp" />
     <ClInclude Include="logging.hpp" />
     <ClInclude Include="utils.hpp" />
