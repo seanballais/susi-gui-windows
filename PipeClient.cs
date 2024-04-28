@@ -63,6 +63,8 @@ namespace susi_gui_windows
                         callback(readData);
                         readBytes.Clear();
                     }
+
+                    Thread.Sleep(50);
                 }
                 else
                 {
