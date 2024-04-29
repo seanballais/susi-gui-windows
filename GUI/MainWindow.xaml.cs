@@ -1,11 +1,9 @@
-using Microsoft.UI;
+using CommunityToolkit.Mvvm.Messaging;
 using Microsoft.UI.Windowing;
 using Microsoft.UI.Xaml;
-using System;
-using WinRT.Interop;
 
 using susi_gui_windows.Core;
-using System.Linq;
+using susi_gui_windows.GUI;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -24,23 +22,11 @@ namespace susi_gui_windows
         public MainWindow()
         {
             this.InitializeComponent();
-
-            this.Closed += OnClosed;
-
-            this.appWindow = GetAppWindowForCurrentWindow();
-            this.appWindow.Closing += OnClosing;
         }
 
         public void SetText(string str)
         {
             arguments = str;
-        }
-
-        private void OnClosed(object sender, WindowEventArgs e) { }
-
-        private void OnClosing(object sender, AppWindowClosingEventArgs e)
-        {
-            this.Close();
         }
 
         private void myButton_Click(object sender, RoutedEventArgs e)
@@ -53,13 +39,6 @@ namespace susi_gui_windows
             string src_file = "C:/Users/sean/Packages/Shared Development Packages/All/Test Sized Files/200MB.zip";
             string password = "heyheyheyheyhey";
             task = new Core.Task(TaskType.Encryption, src_file, password);
-        }
-
-        private AppWindow GetAppWindowForCurrentWindow()
-        {
-            IntPtr hWnd = WindowNative.GetWindowHandle(this);
-            WindowId myWndId = Win32Interop.GetWindowIdFromWindow(hWnd);
-            return AppWindow.GetFromWindowId(myWndId);
         }
 
         private void getNumReadBytes_Click(object sender, RoutedEventArgs e)

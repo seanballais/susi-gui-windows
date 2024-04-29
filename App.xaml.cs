@@ -2,9 +2,12 @@
 using System.IO;
 using System.IO.Pipes;
 using System.Security.Principal;
+using CommunityToolkit.Mvvm.Messaging;
 using Microsoft.UI.Xaml;
 using Microsoft.Windows.AppLifecycle;
 using susi_gui_windows.Core;
+using susi_gui_windows.GUI;
+using susi_gui_windows.Messages;
 using susi_gui_windows.OS;
 
 namespace susi_gui_windows
@@ -15,6 +18,7 @@ namespace susi_gui_windows
     public partial class App : Application
     {
         private MainWindow mainWindow;
+        private PipeClient pipeClient;
 
         /// <summary>
         /// Initializes the singleton application object.  This is the first line of authored code
@@ -57,10 +61,16 @@ namespace susi_gui_windows
             Microsoft.Windows.AppLifecycle.AppInstance.GetCurrent().Activated += App_Activated;
 
             mainWindow = new MainWindow();
+            mainWindow.Closed += MainWindow_Closed;
             mainWindow.Activate();
 
-            var pipeClient = new PipeClient(mainWindow.SetText);
+            pipeClient = new PipeClient(mainWindow.SetText);
             pipeClient.Start();
+        }
+
+        private void MainWindow_Closed(object sender, WindowEventArgs args)
+        {
+            pipeClient.Stop();
         }
 
         private void App_Activated(object sender, AppActivationArguments args)
