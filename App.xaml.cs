@@ -1,13 +1,10 @@
 ﻿using System;
 using System.IO;
-using System.IO.Pipes;
-using System.Security.Principal;
-using CommunityToolkit.Mvvm.Messaging;
+
 using Microsoft.UI.Xaml;
 using Microsoft.Windows.AppLifecycle;
+
 using susi_gui_windows.Core;
-using susi_gui_windows.GUI;
-using susi_gui_windows.Messages;
 using susi_gui_windows.OS;
 
 namespace susi_gui_windows
