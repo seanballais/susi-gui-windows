@@ -4,14 +4,23 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:susi_gui_windows"
+    xmlns:models="using:susi_gui_windows.Models"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
-
+    
     <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center">
-        <TextBox x:Name="textContent"></TextBox>
-        <Button x:Name="myButton" Click="myButton_Click">Click Me</Button>
-        <Button x:Name="startEncryption" Click="startEncryption_Click">Start Encryption</Button>
-        <Button x:Name="getNumReadBytes" Click="getNumReadBytes_Click">Get Num Read Bytes</Button>
+        <ListView x:Name="TaskListView" ItemsSource="{x:Bind viewModel.PendingFilePaths}">
+            <ListView.ItemTemplate>
+                <DataTemplate x:DataType="x:String">
+                    <Grid>
+                        <TextBlock
+                            Text="{Binding}"
+                            FontSize="15"
+                            VerticalAlignment="Center" />
+                    </Grid>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
     </StackPanel>
 </Window>

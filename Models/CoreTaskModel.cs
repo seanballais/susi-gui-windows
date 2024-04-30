@@ -5,7 +5,7 @@ using susi_gui_windows.Core;
 
 namespace susi_gui_windows.Models
 {
-    internal class CoreTaskModel : INotifyPropertyChanged
+    public class CoreTaskModel : INotifyPropertyChanged
     {
         // We need to mention Core.Task instead of Task to ensure that readers
         // know that we are talking about our core library's Task, instead of
@@ -17,7 +17,6 @@ namespace susi_gui_windows.Models
         public CoreTaskModel(Core.Task task)
         {
             this.task = task;
-            
             dispatcherTimer = new DispatcherTimer();
             dispatcherTimer.Tick += DispatcherTimer_Tick;
             dispatcherTimer.Interval = new TimeSpan(0, 0, 0, 0, 16);

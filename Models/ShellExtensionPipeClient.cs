@@ -6,19 +6,18 @@ using System.Linq;
 using System.Security.Principal;
 using System.Text;
 using System.Threading;
-
 using susi_gui_windows.Core;
 
-namespace susi_gui_windows
+namespace susi_gui_windows.Models
 {
-    internal class PipeClient
+    internal class ShellExtensionPipeClient
     {
         private readonly NamedPipeClientStream pipeClient;
-        private Action<string> callback;
+        private Action<string[]> callback;
         private Thread thread;
         private bool shouldThreadStop;
 
-        public PipeClient(Action<string> callback)
+        public ShellExtensionPipeClient(Action<string[]> callback)
         {
             pipeClient = new NamedPipeClientStream(
                 ".",
@@ -33,7 +32,7 @@ namespace susi_gui_windows
 
         public void Start()
         {
-            thread = new Thread(new ThreadStart(this.RunTask));
+            thread = new Thread(new ThreadStart(RunTask));
             thread.Start();
         }
 
@@ -60,7 +59,8 @@ namespace susi_gui_windows
                     if (readBytes.Count > 0)
                     {
                         string readData = Encoding.Unicode.GetString(readBytes.ToArray(), 0, readBytes.Count);
-                        callback(readData);
+                        string[] items = readData.Split('|', StringSplitOptions.RemoveEmptyEntries);
+                        callback(items);
                         readBytes.Clear();
                     }
 

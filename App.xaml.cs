@@ -5,7 +5,10 @@ using Microsoft.UI.Xaml;
 using Microsoft.Windows.AppLifecycle;
 
 using susi_gui_windows.Core;
+using susi_gui_windows.Models;
 using susi_gui_windows.OS;
+using susi_gui_windows.ViewModels;
+using Windows.UI.WindowManagement;
 
 namespace susi_gui_windows
 {
@@ -15,7 +18,8 @@ namespace susi_gui_windows
     public partial class App : Application
     {
         private MainWindow mainWindow;
-        private PipeClient pipeClient;
+        private MainWindowViewModel mainWindowViewModel;
+        private TaskRepository taskRepository;
 
         /// <summary>
         /// Initializes the singleton application object.  This is the first line of authored code
@@ -57,17 +61,15 @@ namespace susi_gui_windows
             // Well, we're the main instance then. Let's register for activation redirection.
             Microsoft.Windows.AppLifecycle.AppInstance.GetCurrent().Activated += App_Activated;
 
-            mainWindow = new MainWindow();
+            taskRepository = new TaskRepository();
+            taskRepository.ListenToNewlyPassedFiles();
+
+            mainWindowViewModel = new MainWindowViewModel();
+
+            mainWindow = new MainWindow(mainWindowViewModel);
             mainWindow.Closed += MainWindow_Closed;
+
             mainWindow.Activate();
-
-            pipeClient = new PipeClient(mainWindow.SetText);
-            pipeClient.Start();
-        }
-
-        private void MainWindow_Closed(object sender, WindowEventArgs args)
-        {
-            pipeClient.Stop();
         }
 
         private void App_Activated(object sender, AppActivationArguments args)
@@ -76,6 +78,11 @@ namespace susi_gui_windows
             var windowHandle = WindowHandle.GetFromWindow(mainWindow);
             WindowManagement.ShowWindow(windowHandle, ShowWindowCommand.ShowNormal);
             WindowManagement.SetForegroundWindow(windowHandle);
+        }
+
+        private void MainWindow_Closed(object sender, WindowEventArgs args)
+        {
+            taskRepository.Dispose();
         }
     }
 }

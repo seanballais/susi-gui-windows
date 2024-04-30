@@ -11,7 +11,7 @@ namespace susi_gui_windows.DS
     /// This class adds the ability to refresh the list when any property of the objects that implements
     /// INotifyPropertyChanged in the list changes.
     /// </summary>
-    internal class ItemObservantObservableCollection<T>
+    public class ItemObservantObservableCollection<T>
         : ObservableCollection<T> where T : INotifyPropertyChanged
     {
         protected override void OnCollectionChanged(NotifyCollectionChangedEventArgs e)
