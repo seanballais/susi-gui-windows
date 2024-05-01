@@ -3,8 +3,9 @@ using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 
 using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Messaging;
 using Microsoft.UI.Dispatching;
-
+using susi_gui_windows.Messages;
 using susi_gui_windows.Models;
 
 namespace susi_gui_windows.ViewModels
@@ -15,24 +16,32 @@ namespace susi_gui_windows.ViewModels
         private ObservableCollection<string> pendingFilePaths;
 
         private TaskRepository taskRepository;
-        private readonly Guid taskRepositoryClientGUID;
         private readonly DispatcherQueue dispatcherQueue;
 
         public MainWindowViewModel(TaskRepository taskRepository)
         {
             this.taskRepository = taskRepository;
-            taskRepositoryClientGUID = this.taskRepository.ConnectClient();
             dispatcherQueue = DispatcherQueue.GetForCurrentThread();
             pendingFilePaths = new ObservableCollection<string>();
 
-            Task.Run(() =>
+            WeakReferenceMessenger.Default.Register<NewUnsecuredFilesMessage>(this, (r, m) =>
             {
-                for (int i = 0; i < 5; i++)
+                MainWindowViewModel recipient = (MainWindowViewModel) r;
+                recipient.NewUnsecuredFilesMessageCallback(m);
+            });
+        }
+
+        private void NewUnsecuredFilesMessageCallback(NewUnsecuredFilesMessage message)
+        {
+            dispatcherQueue.TryEnqueue(() =>
+            {
+                lock(PendingFilePaths)
                 {
-                    dispatcherQueue.TryEnqueue(() =>
+                    string[] newUnsecuredFilePaths = message.Value;
+                    foreach (string path in newUnsecuredFilePaths)
                     {
-                        PendingFilePaths.Add("test");
-                    });
+                        PendingFilePaths.Add(path);
+                    }
                 }
             });
         }
