@@ -64,7 +64,7 @@ namespace susi_gui_windows
             taskRepository = new TaskRepository();
             taskRepository.ListenToNewlyPassedFiles();
 
-            mainWindowViewModel = new MainWindowViewModel();
+            mainWindowViewModel = new MainWindowViewModel(taskRepository);
 
             mainWindow = new MainWindow(mainWindowViewModel);
             mainWindow.Closed += MainWindow_Closed;

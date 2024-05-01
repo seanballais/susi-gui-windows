@@ -1,44 +1,40 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.ObjectModel;
+using System.Threading.Tasks;
 
 using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Messaging;
 using Microsoft.UI.Dispatching;
 
-using susi_gui_windows.Core;
-using susi_gui_windows.Messages;
+using susi_gui_windows.Models;
 
 namespace susi_gui_windows.ViewModels
 {
-    public partial class MainWindowViewModel : ObservableRecipient
+    internal partial class MainWindowViewModel : ObservableRecipient
     {
         [ObservableProperty]
         private ObservableCollection<string> pendingFilePaths;
 
+        private TaskRepository taskRepository;
+        private readonly Guid taskRepositoryClientGUID;
         private readonly DispatcherQueue dispatcherQueue;
 
-        public MainWindowViewModel()
+        public MainWindowViewModel(TaskRepository taskRepository)
         {
+            this.taskRepository = taskRepository;
+            taskRepositoryClientGUID = this.taskRepository.ConnectClient();
             dispatcherQueue = DispatcherQueue.GetForCurrentThread();
+            pendingFilePaths = new ObservableCollection<string>();
 
-            Messenger.Register<MainWindowViewModel, NewUnsecuredFilesMessage>(
-                this,
-                (r, m) => r.NewUnsecuredFilesMessage_Receiver(m)
-            );
-        }
-
-        private void NewUnsecuredFilesMessage_Receiver(NewUnsecuredFilesMessage message)
-        {
-            string[] newFiles = message.Value;
-            foreach (string filePath in newFiles)
+            Task.Run(() =>
             {
-                // We need to update pendingFilePaths from the UI thread.
-                // This function is getting called in a different thread.
-                Logging.Info($"Got {filePath}.");
-                dispatcherQueue.TryEnqueue(() =>
+                for (int i = 0; i < 5; i++)
                 {
-                    PendingFilePaths.Add(filePath);
-                });
-            }
+                    dispatcherQueue.TryEnqueue(() =>
+                    {
+                        PendingFilePaths.Add("test");
+                    });
+                }
+            });
         }
     }
 }
