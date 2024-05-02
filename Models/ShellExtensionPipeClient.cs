@@ -12,20 +12,13 @@ namespace susi_gui_windows.Models
 {
     internal class ShellExtensionPipeClient
     {
-        private readonly NamedPipeClientStream pipeClient;
+        private NamedPipeClientStream pipeClient;
         private Action<string[]> callback;
         private Thread thread;
         private bool shouldThreadStop;
 
         public ShellExtensionPipeClient(Action<string[]> callback)
         {
-            pipeClient = new NamedPipeClientStream(
-                ".",
-                "susi-FD2694FA-4BB3-4ABD-8CF7-0CCCAFA32347",
-                PipeDirection.In,
-                PipeOptions.Asynchronous,
-                TokenImpersonationLevel.Impersonation
-            );
             this.callback = callback;
             shouldThreadStop = false;
         }
@@ -44,32 +37,86 @@ namespace susi_gui_windows.Models
 
         private void RunTask()
         {
-            pipeClient.Connect();
-
-            var readBytes = new List<byte>();
             while (!shouldThreadStop)
             {
+                try
+                {
+                    ConnectToPipe();
+                }
+                catch (PipeClientThreadClosingException)
+                {
+                    // The thread is already shutting down. We better close now.
+                    pipeClient.Dispose();
+                    break;
+                }
+
+                bool checkingForMoreData = true;
+                var readBytes = new List<byte>();
                 const int ReadBufferSize = 1024;
                 byte[] tempBuffer = new byte[ReadBufferSize];
-                int numRead = pipeClient.Read(tempBuffer, 0, ReadBufferSize);
-                if (numRead == 0)
+                while (checkingForMoreData)
                 {
-                    // No more things to read from the pipe, so it's time to process
-                    // any data we received.
-                    if (readBytes.Count > 0)
+                    int numRead = pipeClient.Read(tempBuffer, 0, ReadBufferSize);
+                    if (numRead == 0)
                     {
-                        string readData = Encoding.Unicode.GetString(readBytes.ToArray(), 0, readBytes.Count);
-                        string[] items = readData.Split('|', StringSplitOptions.RemoveEmptyEntries);
-                        callback(items);
-                        readBytes.Clear();
-                    }
+                        // No more things to read from the pipe, so it's time to process
+                        // any data we received.
+                        checkingForMoreData = false;
 
-                    Thread.Sleep(50);
+                        if (readBytes.Count > 0)
+                        {
+                            string readData = Encoding.Unicode.GetString(readBytes.ToArray(), 0, readBytes.Count);
+                            string[] items = readData.Split('|', StringSplitOptions.RemoveEmptyEntries);
+                            
+                            callback(items);
+                        }
+                    }
+                    else
+                    {
+                        readBytes.AddRange(tempBuffer[0..numRead]);
+                    }
                 }
-                else
+
+                // At this point, we shouldn't be receiving any additional files, and the shell extension's
+                // IPC server will close as well. So, we should disconnect and just attempt to recreate another
+                // pipe instance. We will get reconnected when there is a new IPC server that pops up when the
+                // shell extension is called again.
+                //
+                // However, if we are closing the thread in the middle of receiving data, then this should clean
+                // up our pipe.
+                pipeClient.Dispose();
+            }
+        }
+
+        private void ConnectToPipe()
+        {
+            pipeClient = new NamedPipeClientStream(
+                ".",
+                "susi-FD2694FA-4BB3-4ABD-8CF7-0CCCAFA32347",
+                PipeDirection.In,
+                PipeOptions.Asynchronous,
+                TokenImpersonationLevel.Impersonation
+            );
+            while (!pipeClient.IsConnected && !shouldThreadStop)
+            {
+                try
                 {
-                    readBytes.AddRange(tempBuffer[0..numRead]);
+                    pipeClient.Connect(50);
                 }
+                // Ignore the timeout exception. Wala tayong pake kasi uulit-uulitin lang
+                // nating magtry kumonnect kahit kung wala na siya sa piling mo. Malay
+                // natin bumalik pa. Try lang natin. Tapos, if it doesn't work then, at
+                // least we tried.
+                //
+                // See https://twitter.com/sineclips/status/1593423987375120385
+                // for the Filipino meme reference, and contact any Filipino programmer for
+                // the cultural translation into English.
+                catch (TimeoutException) { }
+            }
+
+            if (shouldThreadStop)
+            {
+                throw new PipeClientThreadClosingException();
             }
         }
     }

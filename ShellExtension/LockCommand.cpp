@@ -154,6 +154,7 @@ private:
 
 DWORD CExplorerCommandLock::_ThreadProc()
 {
+	logInfo(L"New call to _ThreadProc.");
 	IShellItemArray* psia;
 	HRESULT hr = CoGetInterfaceAndReleaseStream(_pstmShellItemArray, IID_PPV_ARGS(&psia));
 	_pstmShellItemArray = NULL;
@@ -165,6 +166,8 @@ DWORD CExplorerCommandLock::_ThreadProc()
 		logInfo(L"Creating pipe server...");
 		ShellExecute(_hwnd, L"open", exePath.c_str(), NULL, GetDLLFolderPath().c_str(), SW_SHOW);
 		pipe_creation_thread.join();
+
+		logInfo(L"Oi. _pipeServerHandle in _ThreadProc: {}", _pipeServerHandle);
 
 		if (_pipeServerHandle != INVALID_HANDLE_VALUE) {
 			logInfo(L"Pipe server ready.");
@@ -240,18 +243,28 @@ HRESULT CExplorerCommandLock::CreateNamedPipeServerAndWaitForConns()
 		NULL
 	);
 
+	logInfo(L"_pipeServerHandle: {}", _pipeServerHandle);
+
 	if (_pipeServerHandle == NULL || _pipeServerHandle == INVALID_HANDLE_VALUE) {
+		logInfo(L"_pipeServerHandle, oh no.");
 		return E_FAIL;
 	}
 
+	logInfo(L"_pipeServerHandle 111: {}", _pipeServerHandle);
+
 	BOOL isClientConnected = ConnectNamedPipe(_pipeServerHandle, NULL);
+	logInfo(L"_pipeServerHandle 222: {}", _pipeServerHandle);
 	if (!isClientConnected) {
+		logInfo(L"_pipeServerHandle 333: {}", _pipeServerHandle);
 		if (GetLastError() == ERROR_PIPE_CONNECTED) {
+			logInfo(L"_pipeServerHandle 444: {}", _pipeServerHandle);
 			return S_OK;
 		}
 		else {
+			logInfo(L"_pipeServerHandle closing.");
 			CloseHandle(_pipeServerHandle);
 		}
+		logInfo(L"_pipeServerHandle, ahhh!");
 		return E_FAIL;
 	}
 

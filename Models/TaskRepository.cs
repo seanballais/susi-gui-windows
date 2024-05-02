@@ -35,6 +35,10 @@ namespace susi_gui_windows.Models
             lock (unsecuredFiles)
             {
                 unsecuredFiles.AddRange(items);
+                foreach (var item in items)
+                {
+                    Logging.Info($"Received: {item}");
+                }
                 WeakReferenceMessenger.Default.Send(new NewUnsecuredFilesMessage(items));
             }
         }
