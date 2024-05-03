@@ -8,7 +8,6 @@ using susi_gui_windows.Core;
 using susi_gui_windows.Models;
 using susi_gui_windows.OS;
 using susi_gui_windows.ViewModels;
-using Windows.UI.WindowManagement;
 
 namespace susi_gui_windows
 {

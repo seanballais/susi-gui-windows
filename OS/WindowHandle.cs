@@ -1,6 +1,8 @@
 ﻿using System;
+
 using Microsoft.UI.Xaml;
 using WinRT.Interop;
+
 using susi_gui_windows.OS.Win32;
 
 namespace susi_gui_windows.OS
