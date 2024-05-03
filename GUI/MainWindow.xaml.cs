@@ -1,3 +1,4 @@
+using Microsoft.UI.Windowing;
 using Microsoft.UI.Xaml;
 
 using susi_gui_windows.ViewModels;
@@ -14,6 +15,11 @@ namespace susi_gui_windows
         public MainWindow(MainWindowViewModel viewModel)
         {
             this.InitializeComponent();
+
+            // We don't want the window to be resizable.
+            var appWindowPresenter = this.AppWindow.Presenter as OverlappedPresenter;
+            appWindowPresenter.IsResizable = false;
+            appWindowPresenter.IsMaximizable = false;
 
             this.viewModel = viewModel;
         }
