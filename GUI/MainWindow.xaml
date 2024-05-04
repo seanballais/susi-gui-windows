@@ -10,7 +10,6 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
     <StackPanel Grid.Column="0" Orientation="Vertical">
-        <TextBlock HorizontalAlignment="Center">Queued Files</TextBlock>
         <ListView x:Name="TaskListView" ItemsSource="{x:Bind viewModel.FileOperations}">
             <ListView.ItemTemplate>
                 <DataTemplate x:DataType="gui:FileOperation">

@@ -16,6 +16,9 @@
     <Authors>Sean Ballais</Authors>
     <BaseOutputPath>bin\build\app</BaseOutputPath>
   </PropertyGroup>
+  <ItemGroup>
+    <None Remove="GUI\PasswordRequestDialog.xaml" />
+  </ItemGroup>
 
   <ItemGroup>
     <Content Include="Assets\SplashScreen.scale-200.png" />
@@ -49,6 +52,9 @@
     <ProjectCapability Include="Msix" />
   </ItemGroup>
   <ItemGroup>
+    <Page Update="GUI\PasswordRequestDialog.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <None Update="ShellExtension.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

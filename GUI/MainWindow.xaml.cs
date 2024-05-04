@@ -48,15 +48,8 @@ namespace susi_gui_windows
                 int numQueuedFiles = viewModel.UnsecuredFiles.Count;
                 TargetFile targetFile = viewModel.UnsecuredFiles[0];
 
-                ContentDialog dialog = new ContentDialog()
-                {
-                    XamlRoot = this.Content.XamlRoot,
-                    Title = $"Set Password for File ({numQueuedFiles} Files Queued)",
-                    Content = $"Set the password for {targetFile.FileName}?",
-                    PrimaryButtonText = "Set Password",
-                    SecondaryButtonText = "Cancel Locking"
-                };
-                
+                var dialog = new PasswordRequestDialog(targetFile, this.Content.XamlRoot);
+                Logging.Info("Created dialog.");
                 try
                 {
                     ContentDialogResult result = await dialog.ShowAsync();
