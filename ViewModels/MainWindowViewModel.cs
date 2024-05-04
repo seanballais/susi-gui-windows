@@ -1,4 +1,5 @@
-﻿using System.Collections.ObjectModel;
+﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
 
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Messaging;
@@ -12,16 +13,16 @@ namespace susi_gui_windows.ViewModels
 {
     internal partial class MainWindowViewModel : ObservableRecipient
     {
-        public ObservableCollection<FileOperation> fileOperations;
-        public ObservableCollection<TargetFile> unsecuredFiles;
+        private RangeObservableCollection<FileOperation> fileOperations;
+        private RangeObservableCollection<TargetFile> unsecuredFiles;
 
         private TaskRepository taskRepository;
         private readonly DispatcherQueue dispatcherQueue;
 
         public MainWindowViewModel(TaskRepository taskRepository)
         {
-            fileOperations = new ObservableCollection<FileOperation>();
-            unsecuredFiles = new ObservableCollection<TargetFile>();
+            fileOperations = new RangeObservableCollection<FileOperation>();
+            unsecuredFiles = new RangeObservableCollection<TargetFile>();
 
             this.taskRepository = taskRepository;
             dispatcherQueue = DispatcherQueue.GetForCurrentThread();
@@ -43,11 +44,13 @@ namespace susi_gui_windows.ViewModels
                 lock (unsecuredFiles)
                 {
                     string[] newUnsecuredFilePaths = message.Value;
+                    List<TargetFile> newUnsecuredFiles = [];
                     foreach (string path in newUnsecuredFilePaths)
                     {
                         var targetFile = new TargetFile(path, FileOperationType.Encryption);
-                        unsecuredFiles.Add(targetFile);
+                        newUnsecuredFiles.Add(targetFile);
                     }
+                    unsecuredFiles.AddRange(newUnsecuredFiles);
                 }
             });
         }

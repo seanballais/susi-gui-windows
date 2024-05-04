@@ -9,7 +9,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
-    <StackPanel x:Name="rootPanel" Grid.Column="0" Orientation="Vertical">
+    <StackPanel Grid.Column="0" Orientation="Vertical">
         <TextBlock HorizontalAlignment="Center">Queued Files</TextBlock>
         <ListView x:Name="TaskListView" ItemsSource="{x:Bind viewModel.FileOperations}">
             <ListView.ItemTemplate>

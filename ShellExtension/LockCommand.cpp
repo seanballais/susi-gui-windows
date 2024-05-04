@@ -162,12 +162,10 @@ DWORD CExplorerCommandLock::_ThreadProc()
 		std::wstring exePath = GetDLLFolderPath();
 		exePath.append(L"\\Susi.exe");
 
-		auto pipe_creation_thread = std::thread(&CExplorerCommandLock::CreateNamedPipeServerAndWaitForConns, this);
 		logInfo(L"Creating pipe server...");
+		auto pipe_creation_thread = std::thread(&CExplorerCommandLock::CreateNamedPipeServerAndWaitForConns, this);
 		ShellExecute(_hwnd, L"open", exePath.c_str(), NULL, GetDLLFolderPath().c_str(), SW_SHOW);
 		pipe_creation_thread.join();
-
-		logInfo(L"Oi. _pipeServerHandle in _ThreadProc: {}", _pipeServerHandle);
 
 		if (_pipeServerHandle != INVALID_HANDLE_VALUE) {
 			logInfo(L"Pipe server ready.");

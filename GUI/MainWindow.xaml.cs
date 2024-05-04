@@ -1,3 +1,4 @@
+using Microsoft.UI.Dispatching;
 using Microsoft.UI.Windowing;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
@@ -17,6 +18,7 @@ namespace susi_gui_windows
     {
         private MainWindowViewModel viewModel;
         private bool areWeAskingPasswordsForFiles;
+        private DispatcherQueue dispatcherQueue;
 
         public MainWindow(MainWindowViewModel viewModel)
         {
@@ -31,48 +33,62 @@ namespace susi_gui_windows
             appWindowPresenter.IsMaximizable = false;
 
             this.viewModel = viewModel;
+            dispatcherQueue = DispatcherQueue.GetForCurrentThread();
 
             // We should listen to changes to the unsecured files collection.
-            this.viewModel.UnsecuredFiles.CollectionChanged += UnsecuredFiles_CollectionChanged;
+            viewModel.UnsecuredFiles.CollectionChanged += UnsecuredFiles_CollectionChanged;
         }
 
         private async void AskPasswordForFilesViaDialog()
         {
             areWeAskingPasswordsForFiles = true;
 
-            while (this.viewModel.UnsecuredFiles.Count > 0)
+            while (viewModel.UnsecuredFiles.Count > 0)
             {
-                int numQueuedFiles = this.viewModel.UnsecuredFiles.Count;
-                TargetFile targetFile = this.viewModel.UnsecuredFiles[0];
+                int numQueuedFiles = viewModel.UnsecuredFiles.Count;
+                TargetFile targetFile = viewModel.UnsecuredFiles[0];
 
                 ContentDialog dialog = new ContentDialog()
                 {
-                    XamlRoot = rootPanel.XamlRoot,
+                    XamlRoot = this.Content.XamlRoot,
                     Title = $"Set Password for File ({numQueuedFiles} Files Queued)",
                     Content = $"Set the password for {targetFile.FileName}?",
                     PrimaryButtonText = "Set Password",
                     SecondaryButtonText = "Cancel Locking"
                 };
-
-                ContentDialogResult result = await dialog.ShowAsync();
-                if (result == ContentDialogResult.Primary)
+                
+                try
                 {
-                    // HOI, GAGONG TRAGICO ROMANTICO! THIS IS TEMPORARY. DO NOT FORGET TO UPDATE.
-                    this.viewModel.FileOperations.Add(
-                        new FileOperation(targetFile.FilePath, FileOperationType.Encryption)
-                    );
+                    ContentDialogResult result = await dialog.ShowAsync();
+                    if (result == ContentDialogResult.Primary)
+                    {
+                        // HOI, GAGONG TRAGICO ROMANTICO! THIS IS TEMPORARY. DO NOT FORGET TO UPDATE.
+                        viewModel.FileOperations.Add(
+                            new FileOperation(targetFile.FilePath, FileOperationType.Encryption)
+                        );
+                    }
+                }
+                catch (Exception e)
+                {
+                    Logging.Info($"Exception found: {e.ToString()}");
                 }
 
-                this.viewModel.UnsecuredFiles.RemoveAt(0);
+                viewModel.UnsecuredFiles.RemoveAt(0);
             }
 
             areWeAskingPasswordsForFiles = false;
         }
 
-        private void UnsecuredFiles_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        private async void UnsecuredFiles_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
             if (!areWeAskingPasswordsForFiles)
             {
+                // Make sure this window's XAML root exists before we start the dialogs.
+                while (this.Content.XamlRoot is null)
+                {
+                    await System.Threading.Tasks.Task.Delay(50);
+                }
+
                 AskPasswordForFilesViaDialog();
             }
         }
