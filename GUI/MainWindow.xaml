@@ -9,20 +9,20 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
-    <StackPanel Grid.Column="0" Orientation="Vertical">
+    <StackPanel x:Name="rootPanel" Grid.Column="0" Orientation="Vertical">
         <TextBlock HorizontalAlignment="Center">Queued Files</TextBlock>
         <ListView x:Name="TaskListView" ItemsSource="{x:Bind viewModel.FileOperations}">
             <ListView.ItemTemplate>
                 <DataTemplate x:DataType="gui:FileOperation">
                     <Grid>
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="256px" />
+                            <ColumnDefinition Width="32px" />
                             <ColumnDefinition Width="*" />
                         </Grid.ColumnDefinitions>
                         <Image Width="32px" Height="32px" Grid.Column="0" Source="{x:Bind FileIcon}" />
                         <StackPanel Grid.Column="1" Orientation="Vertical" >
                             <TextBlock Text="{x:Bind FileName}" FontSize="15" VerticalAlignment="Center" />
-                            <TextBlock Text="{x:Bind FilePath}" FontSize="15" VerticalAlignment="Center" />
+                            <TextBlock Text="{x:Bind FilePath}" FontSize="11" FontWeight="ExtraLight" VerticalAlignment="Center" />
                         </StackPanel>
                     </Grid>
                 </DataTemplate>

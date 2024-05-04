@@ -1,11 +1,9 @@
-﻿using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Drawing;
+﻿using System.Collections.ObjectModel;
 
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Messaging;
 using Microsoft.UI.Dispatching;
-using Microsoft.UI.Xaml.Media.Imaging;
+
 using susi_gui_windows.GUI;
 using susi_gui_windows.Messages;
 using susi_gui_windows.Models;
@@ -14,20 +12,19 @@ namespace susi_gui_windows.ViewModels
 {
     internal partial class MainWindowViewModel : ObservableRecipient
     {
-        [ObservableProperty]
-        private ObservableCollection<FileOperation> fileOperations;
+        public ObservableCollection<FileOperation> fileOperations;
+        public ObservableCollection<TargetFile> unsecuredFiles;
 
         private TaskRepository taskRepository;
         private readonly DispatcherQueue dispatcherQueue;
-        private readonly Dictionary<string, Icon> fileDefaultIcons;
 
         public MainWindowViewModel(TaskRepository taskRepository)
         {
             fileOperations = new ObservableCollection<FileOperation>();
+            unsecuredFiles = new ObservableCollection<TargetFile>();
 
             this.taskRepository = taskRepository;
             dispatcherQueue = DispatcherQueue.GetForCurrentThread();
-            fileDefaultIcons = new Dictionary<string, Icon>();
 
             WeakReferenceMessenger.Default.Register<NewUnsecuredFilesMessage>(this, (r, m) =>
             {
@@ -36,17 +33,20 @@ namespace susi_gui_windows.ViewModels
             });
         }
 
+        public ObservableCollection<FileOperation> FileOperations { get { return fileOperations; } }
+        public ObservableCollection<TargetFile> UnsecuredFiles { get { return unsecuredFiles; } }
+
         private void NewUnsecuredFilesMessageCallback(NewUnsecuredFilesMessage message)
         {
             dispatcherQueue.TryEnqueue(() =>
             {
-                lock (FileOperations)
+                lock (unsecuredFiles)
                 {
                     string[] newUnsecuredFilePaths = message.Value;
                     foreach (string path in newUnsecuredFilePaths)
                     {
-                        var operation = new FileOperation(path, FileOperationType.Encryption);
-                        FileOperations.Add(operation);
+                        var targetFile = new TargetFile(path, FileOperationType.Encryption);
+                        unsecuredFiles.Add(targetFile);
                     }
                 }
             });
