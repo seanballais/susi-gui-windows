@@ -49,7 +49,11 @@ namespace susi_gui_windows
                 TargetFile targetFile = viewModel.UnsecuredFiles[0];
 
                 var dialog = new PasswordRequestDialog(targetFile, this.Content.XamlRoot);
-                Logging.Info("Created dialog.");
+
+                string fileWord = (numQueuedFiles > 1) ? "Files" : "File";
+                string numQueuedFilesSubText = $"{numQueuedFiles} {fileWord} Queued";
+                dialog.Title = $"Password Required ({numQueuedFilesSubText})";
+
                 try
                 {
                     ContentDialogResult result = await dialog.ShowAsync();

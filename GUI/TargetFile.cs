@@ -26,5 +26,6 @@ namespace susi_gui_windows.GUI
         public string FileName { get { return Path.GetFileName(filePath); } }
         public string FilePath { get { return filePath; } }
         public BitmapImage FileIcon { get { return fileIcon; } }
+        public FileOperationType OperationType { get { return type; } }
     }
 }
