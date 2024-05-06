@@ -1,9 +1,10 @@
 using System;
-using System.Threading.Tasks;
+using System.ComponentModel;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
+using Microsoft.UI.Xaml.Data;
 using susi_gui_windows.Core;
 using susi_gui_windows.Utilities;
 
@@ -42,12 +43,14 @@ namespace susi_gui_windows.GUI
 
         public TargetFile TargetFile
         {
+            get { return targetFile; }
             set {
                 targetFile = value;
                 if (targetFile.OperationType == FileOperationType.Encryption)
                 {
                     PrimaryButtonText = "Lock File";
                 }
+                Bindings.Update();
             }
         }
 
