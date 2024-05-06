@@ -67,7 +67,7 @@ namespace susi_gui_windows
 
             mainWindow = new MainWindow(mainWindowViewModel);
             mainWindow.Closed += MainWindow_Closed;
-
+            await mainWindow.InitializeCustomComponents();
             mainWindow.Activate();
         }
 

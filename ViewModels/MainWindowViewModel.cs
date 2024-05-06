@@ -34,8 +34,13 @@ namespace susi_gui_windows.ViewModels
             });
         }
 
-        public ObservableCollection<FileOperation> FileOperations { get { return fileOperations; } }
-        public ObservableCollection<TargetFile> UnsecuredFiles { get { return unsecuredFiles; } }
+        public RangeObservableCollection<FileOperation> FileOperations { get { return fileOperations; } }
+        public RangeObservableCollection<TargetFile> UnsecuredFiles { get { return unsecuredFiles; } }
+
+        public void AddFileOperation(TargetFile targetFile)
+        {
+            fileOperations.Add(new FileOperation(targetFile.FilePath, targetFile.OperationType));
+        }
 
         private void NewUnsecuredFilesMessageCallback(NewUnsecuredFilesMessage message)
         {
