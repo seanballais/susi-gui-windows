@@ -20,7 +20,7 @@ namespace susi_gui_windows.GUI
     {
         private TargetFile targetFile;
 
-        private Action primaryButtonAction;
+        private Action<string> primaryButtonAction;
         private ResourcePadlock resourcePadlock;
 
         public PasswordRequestDialog(XamlRoot xamlRoot)
@@ -54,21 +54,21 @@ namespace susi_gui_windows.GUI
             }
         }
 
-        public Action PrimaryButtonAction
+        public Action<string> PrimaryButtonAction
         {
             get { return primaryButtonAction; }
             set { primaryButtonAction = value; }
         }
 
         [RelayCommand(CanExecute = nameof(CanRunPrimaryButtonAction))]
-        private void RunPrimaryButtonAction()
+        private void RunPrimaryButtonAction(string password)
         {
             if (resourcePadlock.Lock(PrimaryButtonAction) == ResourcePadlockStatus.Locked)
             {
+                // Just a check to be sure that we can run the command.
                 if (RunPrimaryButtonActionCommand.CanExecute(null))
                 {
-                    PrimaryButtonAction();
-                    ClearTextBoxes();
+                    PrimaryButtonAction(password);
                 }
 
                 resourcePadlock.Unlock(PrimaryButtonAction);
@@ -88,6 +88,8 @@ namespace susi_gui_windows.GUI
                 confirmPasswordErrorInfoBar.Message = "Password confirmation is required.";
                 confirmPasswordErrorInfoBar.IsOpen = true;
             }
+
+            PrimaryButtonCommand.Execute(passwordTextbox.Password);
 
             ClearTextBoxes();
         }
@@ -157,15 +159,8 @@ namespace susi_gui_windows.GUI
             bool isPasswordSet = !string.IsNullOrEmpty(password);
             bool isPasswordConfirmationSet = !string.IsNullOrEmpty(passwordConfirmation);
             bool arePasswordsMatching = password.Equals(passwordConfirmation);
-            bool isPrimaryButtonActionSet = PrimaryButtonAction is not null;
-            bool isPrimaryButtonActionRunning = (
-                isPrimaryButtonActionSet && resourcePadlock.IsResourceLocked(PrimaryButtonAction)
-            );
 
-            return isPasswordSet
-                && isPasswordConfirmationSet
-                && arePasswordsMatching
-                && !isPrimaryButtonActionRunning;
+            return isPasswordSet && isPasswordConfirmationSet && arePasswordsMatching;
         }
     }
 }

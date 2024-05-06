@@ -82,10 +82,12 @@ namespace susi_gui_windows
                     TargetFile targetFile = viewModel.UnsecuredFiles[0];
 
                     string fileWord = (numQueuedFiles > 1) ? "Files" : "File";
-                    string numQueuedFilesSubText = $"{numQueuedFiles} {fileWord} Queued";
+                    string numQueuedFilesSubText = $"{numQueuedFiles} {fileWord} in Queue";
                     passwordRequestDialog.Title = $"Password Required ({numQueuedFilesSubText})";
                     passwordRequestDialog.TargetFile = targetFile;
-                    passwordRequestDialog.PrimaryButtonAction = () => viewModel.AddFileOperation(targetFile);
+                    passwordRequestDialog.PrimaryButtonAction = (string password) => {
+                        viewModel.AddFileOperation(targetFile, password);
+                    };
 
                     try
                     {

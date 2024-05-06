@@ -37,9 +37,9 @@ namespace susi_gui_windows.ViewModels
         public RangeObservableCollection<FileOperation> FileOperations { get { return fileOperations; } }
         public RangeObservableCollection<TargetFile> UnsecuredFiles { get { return unsecuredFiles; } }
 
-        public void AddFileOperation(TargetFile targetFile)
+        public void AddFileOperation(TargetFile targetFile, string password)
         {
-            fileOperations.Add(new FileOperation(targetFile.FilePath, targetFile.OperationType));
+            fileOperations.Add(new FileOperation(targetFile.FilePath, targetFile.OperationType, password));
         }
 
         private void NewUnsecuredFilesMessageCallback(NewUnsecuredFilesMessage message)

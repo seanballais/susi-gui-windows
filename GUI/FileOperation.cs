@@ -15,13 +15,14 @@ namespace susi_gui_windows.GUI
         private BitmapImage fileIcon;
         private string password;
 
-        public FileOperation(string filePath, FileOperationType type)
+        public FileOperation(string filePath, FileOperationType type, string password)
         {
             this.filePath = filePath;
             
             Icon gdiFileIcon = Icon.ExtractAssociatedIcon(this.filePath);
             fileIcon = GraphicsUtils.ConvertGDIIconToWinUIBitmapSource(gdiFileIcon);
 
+            this.password = password;
             this.type = type;
         }
 
