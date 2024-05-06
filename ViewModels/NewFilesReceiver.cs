@@ -3,20 +3,17 @@ using System.Collections.Generic;
 
 using CommunityToolkit.Mvvm.Messaging;
 using Microsoft.UI.Xaml.Controls;
-
 using susi_gui_windows.Core;
 using susi_gui_windows.Messages;
 
-namespace susi_gui_windows.Models
+namespace susi_gui_windows.ViewModels
 {
-    internal class TaskRepository : IDisposable
+    internal class NewFilesReceiver : IDisposable
     {
-        private List<string> unsecuredFiles;
         private ShellExtensionPipeClient pipeNewFilesClient;
 
-        public TaskRepository()
+        public NewFilesReceiver()
         {
-            unsecuredFiles = [];
             pipeNewFilesClient = new ShellExtensionPipeClient(PipeNewFilesClient_Callback);
         }
 
@@ -32,11 +29,7 @@ namespace susi_gui_windows.Models
 
         private void PipeNewFilesClient_Callback(string[] items)
         {
-            lock (unsecuredFiles)
-            {
-                unsecuredFiles.AddRange(items);
-                WeakReferenceMessenger.Default.Send(new NewUnsecuredFilesMessage(items));
-            }
+            WeakReferenceMessenger.Default.Send(new NewUnsecuredFilesMessage(items));
         }
     }
 }

@@ -5,7 +5,6 @@ using Microsoft.UI.Xaml;
 using Microsoft.Windows.AppLifecycle;
 
 using susi_gui_windows.Core;
-using susi_gui_windows.Models;
 using susi_gui_windows.OS;
 using susi_gui_windows.ViewModels;
 
@@ -18,7 +17,7 @@ namespace susi_gui_windows
     {
         private MainWindow mainWindow;
         private MainWindowViewModel mainWindowViewModel;
-        private TaskRepository taskRepository;
+        private NewFilesReceiver newFilesReceiver;
 
         /// <summary>
         /// Initializes the singleton application object.  This is the first line of authored code
@@ -60,10 +59,10 @@ namespace susi_gui_windows
             // Well, we're the main instance then. Let's register for activation redirection.
             Microsoft.Windows.AppLifecycle.AppInstance.GetCurrent().Activated += App_Activated;
 
-            taskRepository = new TaskRepository();
-            taskRepository.ListenToNewlyPassedFiles();
+            newFilesReceiver = new NewFilesReceiver();
+            newFilesReceiver.ListenToNewlyPassedFiles();
 
-            mainWindowViewModel = new MainWindowViewModel(taskRepository);
+            mainWindowViewModel = new MainWindowViewModel();
 
             mainWindow = new MainWindow(mainWindowViewModel);
             mainWindow.Closed += MainWindow_Closed;
@@ -81,7 +80,8 @@ namespace susi_gui_windows
 
         private void MainWindow_Closed(object sender, WindowEventArgs args)
         {
-            taskRepository.Dispose();
+            newFilesReceiver.Dispose();
+            mainWindowViewModel.Dispose();
         }
     }
 }

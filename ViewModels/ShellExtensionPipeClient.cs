@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading;
 using susi_gui_windows.Core;
 
-namespace susi_gui_windows.Models
+namespace susi_gui_windows.ViewModels
 {
     internal class ShellExtensionPipeClient
     {
@@ -67,7 +67,7 @@ namespace susi_gui_windows.Models
                         {
                             string readData = Encoding.Unicode.GetString(readBytes.ToArray(), 0, readBytes.Count);
                             string[] items = readData.Split('|', StringSplitOptions.RemoveEmptyEntries);
-                            
+
                             callback(items);
                         }
                     }

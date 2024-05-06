@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace susi_gui_windows.Models
+namespace susi_gui_windows.ViewModels
 {
     internal class PipeClientThreadClosingException : Exception
     {

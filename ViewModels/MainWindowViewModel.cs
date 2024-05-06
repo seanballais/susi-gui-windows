@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -7,25 +8,34 @@ using Microsoft.UI.Dispatching;
 
 using susi_gui_windows.GUI;
 using susi_gui_windows.Messages;
-using susi_gui_windows.Models;
 
 namespace susi_gui_windows.ViewModels
 {
-    internal partial class MainWindowViewModel : ObservableRecipient
+    internal partial class MainWindowViewModel : ObservableRecipient, IDisposable
     {
-        private RangeObservableCollection<FileOperation> fileOperations;
+        private ObservableCollection<FileOperation> fileOperations;
         private RangeObservableCollection<TargetFile> unsecuredFiles;
 
-        private TaskRepository taskRepository;
         private readonly DispatcherQueue dispatcherQueue;
+        private readonly DispatcherQueueTimer fileOperationsStatusTimer;
 
-        public MainWindowViewModel(TaskRepository taskRepository)
+        public MainWindowViewModel()
         {
-            fileOperations = new RangeObservableCollection<FileOperation>();
+            fileOperations = new ObservableCollection<FileOperation>();
             unsecuredFiles = new RangeObservableCollection<TargetFile>();
 
-            this.taskRepository = taskRepository;
             dispatcherQueue = DispatcherQueue.GetForCurrentThread();
+            fileOperationsStatusTimer = dispatcherQueue.CreateTimer();
+
+            fileOperationsStatusTimer.Interval = TimeSpan.FromMilliseconds(16);
+            fileOperationsStatusTimer.Tick += (s, e) =>
+            {
+                foreach (FileOperation operation in fileOperations)
+                {
+                    operation.UpdateStatus();
+                }
+            };
+            fileOperationsStatusTimer.Start();
 
             WeakReferenceMessenger.Default.Register<NewUnsecuredFilesMessage>(this, (r, m) =>
             {
@@ -33,8 +43,12 @@ namespace susi_gui_windows.ViewModels
                 recipient.NewUnsecuredFilesMessageCallback(m);
             });
         }
+        public void Dispose()
+        {
+            fileOperationsStatusTimer.Stop();
+        }
 
-        public RangeObservableCollection<FileOperation> FileOperations { get { return fileOperations; } }
+        public ObservableCollection<FileOperation> FileOperations { get { return fileOperations; } }
         public RangeObservableCollection<TargetFile> UnsecuredFiles { get { return unsecuredFiles; } }
 
         public void AddFileOperation(TargetFile targetFile, string password)
