@@ -152,7 +152,6 @@ namespace susi_gui_windows.GUI
 
         private bool CanRunPrimaryButtonAction()
         {
-            Logging.Info("CanRunPrimaryButtonAction triggered");
             string password = passwordTextbox.Password;
             string passwordConfirmation = confirmPasswordTextbox.Password;
 

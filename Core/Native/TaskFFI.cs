@@ -26,7 +26,7 @@ namespace susi_gui_windows.Core.Native
             var ptr = get_task_status(taskID.Pointer);
             if (ptr == IntPtr.Zero)
             {
-                throw new NullFFIPointerException("Failed to get task status due to a core library error.");
+                throw new NullFFIPointerException("Task does not exist.");
             }
 
             var taskStatus = Marshal.PtrToStructure<TaskStatusNative>(ptr);

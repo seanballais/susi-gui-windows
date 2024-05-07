@@ -50,13 +50,30 @@ namespace susi_gui_windows.ViewModels
 
         public void UpdateStatus()
         {
-            TaskStatus taskStatus = task.GetStatus();
-            if (taskStatus is null)
+            if (IsFinished())
             {
-                // No use in updating the properties. The task would be done already.
+                // Operation is done. So, no need to update any of the properties.
+                // If we force ourselves to still call `task.GetStatus()`, exceptions
+                // will be thrown from down the stack in the function since the status
+                // object of the task that this file operation is associated with will
+                // already have been deleted by the time this operation is done *and*
+                // when we got its final status. The absence of the status object will
+                // cause a NullFFIPointerException to be thrown internally in our FFI
+                // layer.
+                //
+                // These exceptions, fortunately, are caught internally. But, we have to
+                // remember that this function, `UpdateStatus()`, gets called multiple
+                // times per second by a DispatchQueueTimer. Exception handling is also
+                // expensive. So, any exceptions thrown inside `task.GetStatus()` will
+                // contribute to a degradation of the app's performance.
+                //
+                // Returning this function once we know that the operation is done prevents
+                // us from calling `task.GetStatus()`, averting the issues we would have
+                // encountered as mentioned earlier.
                 return;
             }
-            
+
+            TaskStatus taskStatus = task.GetStatus();            
             double numWrittenBytes = (double) taskStatus.NumWrittenBytes;
             progressRatio = Math.Min(numWrittenBytes / (double) fileSize, 1.0);
 
@@ -67,6 +84,13 @@ namespace susi_gui_windows.ViewModels
                 state = taskStatus.Progress;
                 NotifyPropertyChanged(nameof(State));
             }
+        }
+
+        private bool IsFinished()
+        {
+            return state == TaskProgress.Done
+                || state == TaskProgress.Failed
+                || state == TaskProgress.Interrupted;
         }
 
         private void NotifyPropertyChanged(string property)
