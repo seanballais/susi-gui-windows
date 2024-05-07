@@ -3,8 +3,9 @@
     x:Class="susi_gui_windows.GUI.MainPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:vm="using:susi_gui_windows.ViewModels"
     xmlns:conv="using:susi_gui_windows.Converters"
+    xmlns:gui="using:susi_gui_windows.GUI"
+    xmlns:vm="using:susi_gui_windows.ViewModels"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
@@ -26,17 +27,33 @@
                             <Image Width="32px" Height="32px" Grid.Column="0" Source="{x:Bind FileIcon}" />
                             <StackPanel Grid.Column="1" Orientation="Vertical" >
                                 <TextBlock
-                        Text="{x:Bind FileName}"
-                        FontSize="15"
-                        VerticalAlignment="Center" />
+                                    Text="{x:Bind gui:TextUtils.SetFileOperationTitle(FileName, OperationType)}"
+                                    FontSize="15"
+                                    VerticalAlignment="Center"
+                                    TextWrapping="NoWrap"
+                                    TextTrimming="CharacterEllipsis">
+                                    <ToolTipService.ToolTip>
+                                        <ToolTip Content="{x:Bind FileName}" />
+                                    </ToolTipService.ToolTip>
+                                </TextBlock>
                                 <TextBlock
-                        Text="{x:Bind FilePath}"
-                        FontSize="11"
-                        FontWeight="ExtraLight"
-                        VerticalAlignment="Center" />
+                                    Text="{x:Bind FilePath}"
+                                    FontSize="11"
+                                    FontWeight="ExtraLight"
+                                    VerticalAlignment="Center"
+                                    TextWrapping="NoWrap"
+                                    TextTrimming="CharacterEllipsis">
+                                    <ToolTipService.ToolTip>
+                                        <ToolTip Content="{x:Bind FilePath}" />
+                                    </ToolTipService.ToolTip>
+                                </TextBlock>
                             </StackPanel>
                         </Grid>
                         <StackPanel Orientation="Vertical">
+                            <TextBlock Text="{
+                                x:Bind State,
+                                Mode=OneWay
+                            }" />
                             <TextBlock Text="{
                                 x:Bind ProgressRatio,
                                 Mode=OneWay,

@@ -18,6 +18,7 @@ namespace susi_gui_windows.ViewModels
         private BitmapImage fileIcon;
         private long fileSize;
         private double progressRatio;
+        private TaskProgress state;
 
         public FileOperation(string filePath, FileOperationType type, string password)
         {
@@ -28,6 +29,8 @@ namespace susi_gui_windows.ViewModels
 
             this.type = type;
             fileSize = new FileInfo(this.filePath).Length;
+            progressRatio = 0;
+            state = TaskProgress.Queued;
 
             TaskType taskType = (type == FileOperationType.Encryption)
                 ? TaskType.Encryption
@@ -39,17 +42,31 @@ namespace susi_gui_windows.ViewModels
         public string FilePath { get { return filePath; } }
         public long FileSize { get { return fileSize; } }
         public BitmapImage FileIcon { get { return fileIcon; } }
+        public FileOperationType OperationType { get { return type; } }
         public double ProgressRatio { get { return progressRatio; } }
+        public TaskProgress State { get { return state; } }
 
         public event PropertyChangedEventHandler PropertyChanged;
 
         public void UpdateStatus()
         {
             TaskStatus taskStatus = task.GetStatus();
-            double numWrittenBytes = (taskStatus is not null) ? (double) taskStatus.NumWrittenBytes : 0;
+            if (taskStatus is null)
+            {
+                // No use in updating the properties. The task would be done already.
+                return;
+            }
+            
+            double numWrittenBytes = (double) taskStatus.NumWrittenBytes;
             progressRatio = Math.Min(numWrittenBytes / (double) fileSize, 1.0);
 
             NotifyPropertyChanged(nameof(ProgressRatio));
+
+            if (taskStatus.Progress != state)
+            {
+                state = taskStatus.Progress;
+                NotifyPropertyChanged(nameof(State));
+            }
         }
 
         private void NotifyPropertyChanged(string property)
