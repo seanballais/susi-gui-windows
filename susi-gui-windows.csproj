@@ -17,6 +17,7 @@
     <BaseOutputPath>bin\build\app</BaseOutputPath>
   </PropertyGroup>
   <ItemGroup>
+    <None Remove="GUI\MainPage.xaml" />
     <None Remove="GUI\PasswordRequestDialog.xaml" />
   </ItemGroup>
 
@@ -53,6 +54,9 @@
   </ItemGroup>
   <ItemGroup>
     <Page Update="GUI\PasswordRequestDialog.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Update="GUI\MainPage.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <None Update="ShellExtension.dll">

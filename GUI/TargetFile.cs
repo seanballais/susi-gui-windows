@@ -3,7 +3,7 @@ using System.IO;
 
 using Microsoft.UI.Xaml.Media.Imaging;
 
-using susi_gui_windows.Core;
+using susi_gui_windows.ViewModels;
 
 namespace susi_gui_windows.GUI
 {

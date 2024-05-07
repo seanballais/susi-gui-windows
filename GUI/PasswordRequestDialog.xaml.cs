@@ -1,12 +1,12 @@
 using System;
-using System.ComponentModel;
-using CommunityToolkit.Mvvm.ComponentModel;
+
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
-using Microsoft.UI.Xaml.Data;
+
 using susi_gui_windows.Core;
 using susi_gui_windows.Utilities;
+using susi_gui_windows.ViewModels;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
