@@ -8,6 +8,7 @@ using Microsoft.UI.Dispatching;
 
 using susi_gui_windows.GUI;
 using susi_gui_windows.Messages;
+using susi_gui_windows.Utilities;
 
 namespace susi_gui_windows.ViewModels
 {
@@ -15,6 +16,7 @@ namespace susi_gui_windows.ViewModels
     {
         private ObservableCollection<FileOperation> fileOperations;
         private RangeObservableCollection<TargetFile> unsecuredFiles;
+        private ResourcePadlock resourcePadlock;
 
         private readonly DispatcherQueue dispatcherQueue;
         private readonly DispatcherQueueTimer fileOperationsStatusTimer;
@@ -23,6 +25,7 @@ namespace susi_gui_windows.ViewModels
         {
             fileOperations = new ObservableCollection<FileOperation>();
             unsecuredFiles = new RangeObservableCollection<TargetFile>();
+            resourcePadlock = new ResourcePadlock();
 
             dispatcherQueue = DispatcherQueue.GetForCurrentThread();
             fileOperationsStatusTimer = dispatcherQueue.CreateTimer();
@@ -30,9 +33,14 @@ namespace susi_gui_windows.ViewModels
             fileOperationsStatusTimer.Interval = TimeSpan.FromMilliseconds(16);
             fileOperationsStatusTimer.Tick += (s, e) =>
             {
-                foreach (FileOperation operation in fileOperations)
+                if (resourcePadlock.Lock(fileOperations) == ResourcePadlockStatus.Locked)
                 {
-                    operation.UpdateStatus();
+                    foreach (FileOperation operation in fileOperations)
+                    {
+                        operation.UpdateStatus();
+                    }
+
+                    resourcePadlock.Unlock(fileOperations);
                 }
             };
             fileOperationsStatusTimer.Start();
