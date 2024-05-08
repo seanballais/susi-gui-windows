@@ -11,7 +11,6 @@
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
     <Page.Resources>
-        <conv:PercentageFormatter x:Key="PercentageFormatter" />
         <conv:RatioToPercentageConverter x:Key="RatioToPercentageConverter" />
     </Page.Resources>
     <StackPanel Grid.Column="0" Orientation="Vertical">
@@ -51,18 +50,23 @@
                         </Grid>
                         <StackPanel Orientation="Vertical">
                             <InfoBar Severity="Success" IsOpen="True" IsClosable="False" />
-                            <ProgressBar
-                                Value="{
-                                    x:Bind ProgressRatio,
-                                    Mode=OneWay,
-                                    Converter={StaticResource RatioToPercentageConverter}
-                                }"
-                                Maximum="100.0"
-                            />
-                            <TextBlock Text="{
-                                x:Bind gui:TextUtils.CreateOperationProgressString(NumProcessedBytes, FileSize),
+                            <StackPanel Visibility="{
+                                x:Bind gui:FileOperationGUIUtils.ShouldProgressBarBeVisible(State),
                                 Mode=OneWay
-                            }" />
+                            }">
+                                <ProgressBar
+                                    Value="{
+                                        x:Bind ProgressRatio,
+                                        Mode=OneWay,
+                                        Converter={StaticResource RatioToPercentageConverter}
+                                    }"
+                                    Maximum="100.0"
+                                />
+                                <TextBlock Text="{
+                                    x:Bind gui:TextUtils.CreateOperationProgressString(NumProcessedBytes, FileSize),
+                                    Mode=OneWay
+                                }" />
+                            </StackPanel>
                         </StackPanel>
                     </StackPanel>
                 </DataTemplate>
