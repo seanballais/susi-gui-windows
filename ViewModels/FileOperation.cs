@@ -17,6 +17,7 @@ namespace susi_gui_windows.ViewModels
         private string filePath;
         private BitmapImage fileIcon;
         private long fileSize;
+        private long numProcessedBytes;
         private double progressRatio;
         private TaskProgress state;
 
@@ -43,6 +44,7 @@ namespace susi_gui_windows.ViewModels
         public long FileSize { get { return fileSize; } }
         public BitmapImage FileIcon { get { return fileIcon; } }
         public FileOperationType OperationType { get { return type; } }
+        public long NumProcessedBytes { get { return numProcessedBytes; } }
         public double ProgressRatio { get { return progressRatio; } }
         public TaskProgress State { get { return state; } }
 
@@ -73,10 +75,11 @@ namespace susi_gui_windows.ViewModels
                 return;
             }
 
-            TaskStatus taskStatus = task.GetStatus();            
-            double numWrittenBytes = (double) taskStatus.NumWrittenBytes;
-            progressRatio = Math.Min(numWrittenBytes / (double) fileSize, 1.0);
+            TaskStatus taskStatus = task.GetStatus();
+            numProcessedBytes = taskStatus.NumProcessedBytes;
+            progressRatio = numProcessedBytes / (double)fileSize;
 
+            NotifyPropertyChanged(nameof(NumProcessedBytes));
             NotifyPropertyChanged(nameof(ProgressRatio));
 
             if (taskStatus.Progress != state)

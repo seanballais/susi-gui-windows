@@ -21,6 +21,7 @@ namespace susi_gui_windows.Core.Native
 
         public readonly nuint NumReadBytes { get { return Status.numReadBytes; } }
         public readonly nuint NumWrittenBytes { get { return Status.numWrittenBytes; } }
+        public readonly nuint NumProcessedBytes { get { return Status.numProcessedBytes; } }
         public readonly bool ShouldStop { get { return Status.shouldStop; } }
         public readonly string LastError { get { return Status.lastError; } }
         public readonly TaskProgressNative Progress { get { return Status.progress; } }

@@ -19,8 +19,9 @@ namespace susi_gui_windows.Core
 
         public static implicit operator TaskStatus(TaskStatusWrapper status) => new TaskStatus(status);
 
-        public long NumReadBytes { get { return (long) status.NumReadBytes; } }
-        public long NumWrittenBytes { get { return (long) status.NumWrittenBytes; } }
+        public long NumReadBytes { get { return (long)status.NumReadBytes; } }
+        public long NumWrittenBytes { get { return (long)status.NumWrittenBytes; } }
+        public long NumProcessedBytes { get { return (long)status.NumProcessedBytes; } }
         public bool ShouldStop { get { return status.ShouldStop; } }
         public string LastError { get { return status.LastError; } }
         public TaskProgress Progress { get { return TaskProgressExtensions.FromTaskProgressNative(status.Progress); } }

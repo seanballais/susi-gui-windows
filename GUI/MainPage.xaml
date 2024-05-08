@@ -50,15 +50,7 @@
                             </StackPanel>
                         </Grid>
                         <StackPanel Orientation="Vertical">
-                            <TextBlock Text="{
-                                x:Bind State,
-                                Mode=OneWay
-                            }" />
-                            <TextBlock Text="{
-                                x:Bind ProgressRatio,
-                                Mode=OneWay,
-                                Converter={StaticResource PercentageFormatter}
-                            }" />
+                            <InfoBar Severity="Success" IsOpen="True" IsClosable="False" />
                             <ProgressBar
                                 Value="{
                                     x:Bind ProgressRatio,
@@ -67,6 +59,10 @@
                                 }"
                                 Maximum="100.0"
                             />
+                            <TextBlock Text="{
+                                x:Bind gui:TextUtils.CreateOperationProgressString(NumProcessedBytes, FileSize),
+                                Mode=OneWay
+                            }" />
                         </StackPanel>
                     </StackPanel>
                 </DataTemplate>
