@@ -20,6 +20,7 @@ namespace susi_gui_windows.ViewModels
         private long numProcessedBytes;
         private double progressRatio;
         private TaskProgress state;
+        private string errorMessage;
 
         public FileOperation(string filePath, FileOperationType type, string password)
         {
@@ -32,6 +33,7 @@ namespace susi_gui_windows.ViewModels
             fileSize = new FileInfo(this.filePath).Length;
             progressRatio = 0;
             state = TaskProgress.Queued;
+            errorMessage = null;
 
             TaskType taskType = (type == FileOperationType.Encryption)
                 ? TaskType.Encryption
@@ -47,6 +49,7 @@ namespace susi_gui_windows.ViewModels
         public long NumProcessedBytes { get { return numProcessedBytes; } }
         public double ProgressRatio { get { return progressRatio; } }
         public TaskProgress State { get { return state; } }
+        public string ErrorMessage { get { return errorMessage; } }
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -76,16 +79,26 @@ namespace susi_gui_windows.ViewModels
             }
 
             TaskStatus taskStatus = task.GetStatus();
-            numProcessedBytes = taskStatus.NumProcessedBytes;
-            progressRatio = numProcessedBytes / (double)fileSize;
 
-            NotifyPropertyChanged(nameof(NumProcessedBytes));
-            NotifyPropertyChanged(nameof(ProgressRatio));
+            if (taskStatus.NumProcessedBytes != numProcessedBytes)
+            {
+                numProcessedBytes = taskStatus.NumProcessedBytes;
+                progressRatio = numProcessedBytes / (double)fileSize;
+
+                NotifyPropertyChanged(nameof(NumProcessedBytes));
+                NotifyPropertyChanged(nameof(ProgressRatio));
+            }
 
             if (taskStatus.Progress != state)
             {
                 state = taskStatus.Progress;
                 NotifyPropertyChanged(nameof(State));
+            }
+
+            if ($"{taskStatus.LastError}." != errorMessage)
+            {
+                errorMessage = $"{taskStatus.LastError}.";
+                NotifyPropertyChanged(nameof(ErrorMessage));
             }
         }
 
