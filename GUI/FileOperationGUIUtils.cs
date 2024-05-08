@@ -1,4 +1,5 @@
 ﻿using Microsoft.UI.Xaml;
+
 using susi_gui_windows.Core;
 
 namespace susi_gui_windows.GUI
@@ -16,6 +17,20 @@ namespace susi_gui_windows.GUI
             else
             {
                 return Visibility.Collapsed;
+            }
+        }
+
+        public static bool ShouldInfoBarBeOpen(TaskProgress state)
+        {
+            if (state == TaskProgress.Done
+                || state == TaskProgress.Failed
+                || state == TaskProgress.Interrupted)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
             }
         }
     }
