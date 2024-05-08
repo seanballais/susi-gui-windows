@@ -9,23 +9,6 @@ namespace susi_gui_windows.GUI
 {
     internal static class TextUtils
     {
-        public static string SetFileOperationTitle(string fileName, FileOperationType type)
-        {
-            if (type == FileOperationType.Encryption)
-            {
-                return $"Locking {fileName}";
-            }
-            else
-            {
-                return $"Unlocking {fileName}";
-            }
-        }
-
-        public static string CreateOperationProgressString(long currValue, long maxValue)
-        {
-            return $"{GetSizeString(currValue)} of {GetSizeString(maxValue)}";
-        }
-
         /// <summary>
         /// Creates the size string from a number of bytes.
         /// </summary>

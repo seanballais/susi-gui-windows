@@ -26,7 +26,10 @@
                             <Image Width="32px" Height="32px" Grid.Column="0" Source="{x:Bind FileIcon}" />
                             <StackPanel Grid.Column="1" Orientation="Vertical" >
                                 <TextBlock
-                                    Text="{x:Bind gui:TextUtils.SetFileOperationTitle(FileName, OperationType)}"
+                                    Text="{
+                                        x:Bind gui:FileOperationGUIUtils.CreateFileOperationTitle(FileName, OperationType, State),
+                                        Mode=OneWay
+                                    }"
                                     FontSize="15"
                                     VerticalAlignment="Center"
                                     TextWrapping="NoWrap"
@@ -76,7 +79,7 @@
                                     }"
                                     Maximum="100.0" />
                                 <TextBlock Text="{
-                                    x:Bind gui:TextUtils.CreateOperationProgressString(NumProcessedBytes, FileSize),
+                                    x:Bind gui:FileOperationGUIUtils.CreateOperationProgressString(NumProcessedBytes, FileSize),
                                     Mode=OneWay
                                 }" />
                             </StackPanel>
