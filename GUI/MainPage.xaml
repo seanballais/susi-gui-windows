@@ -53,15 +53,12 @@
                         </Grid>
                         <StackPanel Orientation="Vertical">
                             <InfoBar
-                                Severity="{
-                                    x:Bind gui:FileOperationGUIUtils.GetInfoBarSeverity(State),
-                                    Mode=OneWay
-                                }"
                                 Title="{
                                     x:Bind gui:FileOperationGUIUtils.CreateInfoBarTitle(State),
                                     Mode=OneWay
                                 }"
                                 Message="{x:Bind ErrorMessage, Mode=OneWay}"
+                                Severity="Error"
                                 IsOpen="{
                                     x:Bind gui:FileOperationGUIUtils.ShouldInfoBarBeOpen(State),
                                     Mode=OneWay

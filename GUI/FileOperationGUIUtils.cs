@@ -70,26 +70,6 @@ namespace susi_gui_windows.GUI
             }
         }
 
-        public static InfoBarSeverity GetInfoBarSeverity(TaskProgress state)
-        {
-            if (state == TaskProgress.Done)
-            {
-                return InfoBarSeverity.Success;
-            }
-            else if (state == TaskProgress.Interrupted)
-            {
-                return InfoBarSeverity.Warning;
-            }
-            else if (state == TaskProgress.Failed)
-            {
-                return InfoBarSeverity.Error;
-            }
-            else
-            {
-                return InfoBarSeverity.Informational;
-            }
-        }
-
         public static string CreateOperationProgressString(long currValue, long maxValue)
         {
             return $"{TextUtils.GetSizeString(currValue)} of {TextUtils.GetSizeString(maxValue)}";
@@ -111,9 +91,7 @@ namespace susi_gui_windows.GUI
 
         public static bool ShouldInfoBarBeOpen(TaskProgress state)
         {
-            if (state == TaskProgress.Done
-                || state == TaskProgress.Failed
-                || state == TaskProgress.Interrupted)
+            if (state == TaskProgress.Failed)
             {
                 return true;
             }
