@@ -18,10 +18,11 @@
             <ListView.ItemTemplate>
                 <DataTemplate x:DataType="vm:FileOperation">
                     <StackPanel Orientation="Vertical">
-                        <Grid>
+                        <Grid >
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="32px" />
+                                <ColumnDefinition Width="Auto" />
                                 <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
                             </Grid.ColumnDefinitions>
                             <Image Width="32px" Height="32px" Grid.Column="0" Source="{x:Bind FileIcon}" />
                             <StackPanel Grid.Column="1" Orientation="Vertical" >
@@ -50,6 +51,9 @@
                                     </ToolTipService.ToolTip>
                                 </TextBlock>
                             </StackPanel>
+                            <Button Grid.Column="2">
+                                <SymbolIcon Symbol="Clear" />
+                            </Button>
                         </Grid>
                         <StackPanel Orientation="Vertical">
                             <InfoBar
