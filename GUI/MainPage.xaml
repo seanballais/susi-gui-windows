@@ -14,7 +14,7 @@
         <conv:RatioToPercentageConverter x:Key="RatioToPercentageConverter" />
     </Page.Resources>
     <StackPanel Grid.Column="0" Orientation="Vertical">
-        <ListView x:Name="TaskListView" ItemsSource="{x:Bind viewModel.FileOperations}">
+        <ListView x:Name="TaskListView" ItemsSource="{x:Bind viewModel.FileOperations, Mode=OneWay}">
             <ListView.ItemTemplate>
                 <DataTemplate x:DataType="vm:FileOperation">
                     <StackPanel Orientation="Vertical">
@@ -51,7 +51,10 @@
                                     </ToolTipService.ToolTip>
                                 </TextBlock>
                             </StackPanel>
-                            <Button Grid.Column="2">
+                            <Button
+                                Grid.Column="2"
+                                CommandParameter="{x:Bind Self, Mode=OneWay}"
+                                Command="{x:Bind ViewModel.RemoveFileOperationCommand}">
                                 <SymbolIcon Symbol="Clear" />
                             </Button>
                         </Grid>

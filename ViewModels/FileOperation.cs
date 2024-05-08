@@ -22,7 +22,14 @@ namespace susi_gui_windows.ViewModels
         private TaskProgress state;
         private string errorMessage;
 
-        public FileOperation(string filePath, FileOperationType type, string password)
+        // Easiest way to let our XAML code access the view model commands.
+        private MainWindowViewModel viewModel;
+
+        public FileOperation(
+            string filePath,
+            FileOperationType type,
+            string password,
+            MainWindowViewModel viewModel)
         {
             this.filePath = filePath;
             
@@ -34,12 +41,17 @@ namespace susi_gui_windows.ViewModels
             progressRatio = 0;
             state = TaskProgress.Queued;
             errorMessage = null;
+            this.viewModel = viewModel;
 
             TaskType taskType = (type == FileOperationType.Encryption)
                 ? TaskType.Encryption
                 : TaskType.Decryption;
             task = new Task(taskType, filePath, password);
         }
+
+        // Forced to have this property since, in WinUI 3, we can't get
+        // the current item inside a DataTemplate.
+        public FileOperation Self { get { return this; } }
 
         public string FileName { get { return Path.GetFileName(filePath); } }
         public string FilePath { get { return filePath; } }
@@ -50,6 +62,7 @@ namespace susi_gui_windows.ViewModels
         public double ProgressRatio { get { return progressRatio; } }
         public TaskProgress State { get { return state; } }
         public string ErrorMessage { get { return errorMessage; } }
+        public MainWindowViewModel ViewModel { get { return viewModel; } }
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -93,6 +106,18 @@ namespace susi_gui_windows.ViewModels
             {
                 state = taskStatus.Progress;
                 NotifyPropertyChanged(nameof(State));
+
+                // For our clear button, we are using a command
+                // (RemoveFileOperationCommand) that takes a FileOperation
+                // as a parameter. To bind that command while also making
+                // sure that we get to this pass this instance of
+                // FileOperation, we first need to provide access to this
+                // instance via the Self property we created. This property
+                // is bound to the command parameter of our clear button,
+                // which is passed to the button's command. To ensure that
+                // the binding gets updated whenever the operation's state
+                // changes, we need to call this notifier.
+                NotifyPropertyChanged(nameof(Self));
             }
 
             if ($"{taskStatus.LastError}." != errorMessage)

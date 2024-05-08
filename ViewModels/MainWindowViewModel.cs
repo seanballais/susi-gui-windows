@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-
+using System.Linq;
 using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using Microsoft.UI.Dispatching;
 
+using susi_gui_windows.Core;
 using susi_gui_windows.GUI;
 using susi_gui_windows.Messages;
 using susi_gui_windows.Utilities;
@@ -61,7 +63,14 @@ namespace susi_gui_windows.ViewModels
 
         public void AddFileOperation(TargetFile targetFile, string password)
         {
-            fileOperations.Add(new FileOperation(targetFile.FilePath, targetFile.OperationType, password));
+            fileOperations.Add(
+                new FileOperation(targetFile.FilePath, targetFile.OperationType, password, this));
+        }
+
+        [RelayCommand(CanExecute = nameof(CanRemoveFileOperation))]
+        public void RemoveFileOperation(FileOperation operation)
+        {
+            fileOperations.Remove(operation);
         }
 
         private void NewUnsecuredFilesMessageCallback(NewUnsecuredFilesMessage message)
@@ -80,6 +89,13 @@ namespace susi_gui_windows.ViewModels
                     unsecuredFiles.AddRange(newUnsecuredFiles);
                 }
             });
+        }
+
+        private bool CanRemoveFileOperation(FileOperation operation)
+        {
+            return operation.State == TaskProgress.Done
+                || operation.State == TaskProgress.Interrupted
+                || operation.State == TaskProgress.Failed;
         }
     }
 }
