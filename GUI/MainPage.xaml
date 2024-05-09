@@ -13,91 +13,89 @@
     <Page.Resources>
         <conv:RatioToPercentageConverter x:Key="RatioToPercentageConverter" />
     </Page.Resources>
-    <StackPanel Grid.Column="0" Orientation="Vertical">
-        <ListView x:Name="TaskListView" ItemsSource="{x:Bind viewModel.FileOperations, Mode=OneWay}">
-            <ListView.ItemTemplate>
-                <DataTemplate x:DataType="vm:FileOperation">
-                    <StackPanel Orientation="Vertical">
-                        <Grid >
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto" />
-                                <ColumnDefinition Width="*" />
-                                <ColumnDefinition Width="Auto" />
-                            </Grid.ColumnDefinitions>
-                            <Image Width="32px" Height="32px" Grid.Column="0" Source="{x:Bind FileIcon}" />
-                            <StackPanel Grid.Column="1" Orientation="Vertical" >
-                                <TextBlock
-                                    Text="{
-                                        x:Bind gui:FileOperationGUIUtils.CreateFileOperationTitle(FileName, OperationType, State),
-                                        Mode=OneWay
-                                    }"
-                                    FontSize="15"
-                                    VerticalAlignment="Center"
-                                    TextWrapping="NoWrap"
-                                    TextTrimming="CharacterEllipsis"
-                                >
-                                    <ToolTipService.ToolTip>
-                                        <ToolTip Content="{x:Bind FileName}" />
-                                    </ToolTipService.ToolTip>
-                                </TextBlock>
-                                <TextBlock
-                                    Text="{x:Bind FilePath}"
-                                    FontSize="11"
-                                    FontWeight="ExtraLight"
-                                    VerticalAlignment="Center"
-                                    TextWrapping="NoWrap"
-                                    TextTrimming="CharacterEllipsis"
-                                >
-                                    <ToolTipService.ToolTip>
-                                        <ToolTip Content="{x:Bind FilePath}" />
-                                    </ToolTipService.ToolTip>
-                                </TextBlock>
-                            </StackPanel>
-                            <Button
-                                Grid.Column="2"
-                                CommandParameter="{x:Bind Self, Mode=OneWay}"
-                                Command="{x:Bind ViewModel.RemoveFileOperationCommand}"
-                                Visibility="{
-                                    x:Bind gui:FileOperationGUIUtils.ShouldClearButtonBeVisible(State),
+    <ListView x:Name="TaskListView" ItemsSource="{x:Bind viewModel.FileOperations, Mode=OneWay}">
+        <ListView.ItemTemplate>
+            <DataTemplate x:DataType="vm:FileOperation">
+                <StackPanel Orientation="Vertical">
+                    <Grid >
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <Image Width="32px" Height="32px" Grid.Column="0" Source="{x:Bind FileIcon}" />
+                        <StackPanel Grid.Column="1" Orientation="Vertical" >
+                            <TextBlock
+                                Text="{
+                                    x:Bind gui:FileOperationGUIUtils.CreateFileOperationTitle(FileName, OperationType, State),
                                     Mode=OneWay
                                 }"
+                                FontSize="15"
+                                VerticalAlignment="Center"
+                                TextWrapping="NoWrap"
+                                TextTrimming="CharacterEllipsis"
                             >
-                                <SymbolIcon Symbol="Clear" />
-                            </Button>
-                        </Grid>
-                        <StackPanel Orientation="Vertical">
-                            <InfoBar
-                                Title="{
-                                    x:Bind gui:FileOperationGUIUtils.CreateInfoBarTitle(State),
-                                    Mode=OneWay
-                                }"
-                                Message="{x:Bind ErrorMessage, Mode=OneWay}"
-                                Severity="Error"
-                                IsOpen="{
-                                    x:Bind gui:FileOperationGUIUtils.ShouldInfoBarBeOpen(State),
-                                    Mode=OneWay
-                                }"
-                                IsClosable="False" />
-                            <StackPanel Visibility="{
-                                x:Bind gui:FileOperationGUIUtils.ShouldProgressBarBeVisible(State),
+                                <ToolTipService.ToolTip>
+                                    <ToolTip Content="{x:Bind FileName}" />
+                                </ToolTipService.ToolTip>
+                            </TextBlock>
+                            <TextBlock
+                                Text="{x:Bind FilePath}"
+                                FontSize="11"
+                                FontWeight="ExtraLight"
+                                VerticalAlignment="Center"
+                                TextWrapping="NoWrap"
+                                TextTrimming="CharacterEllipsis"
+                            >
+                                <ToolTipService.ToolTip>
+                                    <ToolTip Content="{x:Bind FilePath}" />
+                                </ToolTipService.ToolTip>
+                            </TextBlock>
+                        </StackPanel>
+                        <Button
+                            Grid.Column="2"
+                            CommandParameter="{x:Bind Self, Mode=OneWay}"
+                            Command="{x:Bind ViewModel.RemoveFileOperationCommand}"
+                            Visibility="{
+                                x:Bind gui:FileOperationGUIUtils.ShouldClearButtonBeVisible(State),
                                 Mode=OneWay
-                            }">
-                                <ProgressBar
-                                    Value="{
-                                        x:Bind ProgressRatio,
-                                        Mode=OneWay,
-                                        Converter={StaticResource RatioToPercentageConverter}
-                                    }"
-                                    Maximum="100.0" />
+                            }"
+                        >
+                            <SymbolIcon Symbol="Clear" />
+                        </Button>
+                    </Grid>
+                    <StackPanel Orientation="Vertical">
+                        <InfoBar
+                            Title="{
+                                x:Bind gui:FileOperationGUIUtils.CreateInfoBarTitle(State),
+                                Mode=OneWay
+                            }"
+                            Message="{x:Bind ErrorMessage, Mode=OneWay}"
+                            Severity="Error"
+                            IsOpen="{
+                                x:Bind gui:FileOperationGUIUtils.ShouldInfoBarBeOpen(State),
+                                Mode=OneWay
+                            }"
+                            IsClosable="False" />
+                        <StackPanel Visibility="{
+                            x:Bind gui:FileOperationGUIUtils.ShouldProgressBarBeVisible(State),
+                            Mode=OneWay
+                        }">
+                            <ProgressBar
+                                Value="{
+                                    x:Bind ProgressRatio,
+                                    Mode=OneWay,
+                                    Converter={StaticResource RatioToPercentageConverter}
+                                }"
+                                Maximum="100.0" />
                                 <TextBlock Text="{
-                                    x:Bind gui:FileOperationGUIUtils.CreateOperationProgressString(NumProcessedBytes, FileSize),
-                                    Mode=OneWay
-                                }" />
-                            </StackPanel>
+                                x:Bind gui:FileOperationGUIUtils.CreateOperationProgressString(NumProcessedBytes, FileSize),
+                                Mode=OneWay
+                            }" />
                         </StackPanel>
                     </StackPanel>
-                </DataTemplate>
-            </ListView.ItemTemplate>
-        </ListView>
-    </StackPanel>
+                </StackPanel>
+            </DataTemplate>
+        </ListView.ItemTemplate>
+    </ListView>
 </Page>
