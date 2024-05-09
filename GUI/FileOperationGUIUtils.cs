@@ -76,6 +76,20 @@ namespace susi_gui_windows.GUI
             return $"{TextUtils.GetSizeString(currValue)} of {TextUtils.GetSizeString(maxValue)}";
         }
 
+        public static Visibility ShouldClearButtonBeVisible(TaskProgress state)
+        {
+            if (state == TaskProgress.Done
+                || state == TaskProgress.Failed
+                || state == TaskProgress.Interrupted)
+            {
+                return Visibility.Visible;
+            }
+            else
+            {
+                return Visibility.Collapsed;
+            }    
+        }
+
         public static Visibility ShouldProgressBarBeVisible(TaskProgress state)
         {
             if (state != TaskProgress.Done

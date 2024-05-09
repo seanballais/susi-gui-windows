@@ -34,7 +34,8 @@
                                     FontSize="15"
                                     VerticalAlignment="Center"
                                     TextWrapping="NoWrap"
-                                    TextTrimming="CharacterEllipsis">
+                                    TextTrimming="CharacterEllipsis"
+                                >
                                     <ToolTipService.ToolTip>
                                         <ToolTip Content="{x:Bind FileName}" />
                                     </ToolTipService.ToolTip>
@@ -45,7 +46,8 @@
                                     FontWeight="ExtraLight"
                                     VerticalAlignment="Center"
                                     TextWrapping="NoWrap"
-                                    TextTrimming="CharacterEllipsis">
+                                    TextTrimming="CharacterEllipsis"
+                                >
                                     <ToolTipService.ToolTip>
                                         <ToolTip Content="{x:Bind FilePath}" />
                                     </ToolTipService.ToolTip>
@@ -54,7 +56,12 @@
                             <Button
                                 Grid.Column="2"
                                 CommandParameter="{x:Bind Self, Mode=OneWay}"
-                                Command="{x:Bind ViewModel.RemoveFileOperationCommand}">
+                                Command="{x:Bind ViewModel.RemoveFileOperationCommand}"
+                                Visibility="{
+                                    x:Bind gui:FileOperationGUIUtils.ShouldClearButtonBeVisible(State),
+                                    Mode=OneWay
+                                }"
+                            >
                                 <SymbolIcon Symbol="Clear" />
                             </Button>
                         </Grid>
