@@ -49,6 +49,7 @@ namespace susi_gui_windows.ViewModels
 
             WeakReferenceMessenger.Default.Register<NewUnsecuredFilesMessage>(this, (r, m) =>
             {
+                // NOTE: Files received from IPC are for encryption.
                 var recipient = (MainWindowViewModel) r;
                 recipient.NewUnsecuredFilesMessageCallback(m);
             });
@@ -67,6 +68,23 @@ namespace susi_gui_windows.ViewModels
                 new FileOperation(targetFile.FilePath, targetFile.OperationType, password, this));
         }
 
+        public void AddNewUnsecuredFiles(string[] targetFilePaths, FileOperationType type)
+        {
+            dispatcherQueue.TryEnqueue(() =>
+            {
+                lock (unsecuredFiles)
+                {
+                    List<TargetFile> newUnsecuredFiles = [];
+                    foreach (string path in targetFilePaths)
+                    {
+                        var targetFile = new TargetFile(path, FileOperationType.Encryption);
+                        newUnsecuredFiles.Add(targetFile);
+                    }
+                    unsecuredFiles.AddRange(newUnsecuredFiles);
+                }
+            });
+        }
+
         [RelayCommand(CanExecute = nameof(CanRemoveFileOperation))]
         public void RemoveFileOperation(FileOperation operation)
         {
@@ -75,20 +93,8 @@ namespace susi_gui_windows.ViewModels
 
         private void NewUnsecuredFilesMessageCallback(NewUnsecuredFilesMessage message)
         {
-            dispatcherQueue.TryEnqueue(() =>
-            {
-                lock (unsecuredFiles)
-                {
-                    string[] newUnsecuredFilePaths = message.Value;
-                    List<TargetFile> newUnsecuredFiles = [];
-                    foreach (string path in newUnsecuredFilePaths)
-                    {
-                        var targetFile = new TargetFile(path, FileOperationType.Encryption);
-                        newUnsecuredFiles.Add(targetFile);
-                    }
-                    unsecuredFiles.AddRange(newUnsecuredFiles);
-                }
-            });
+            string[] newUnsecuredFilePaths = message.Value;
+            AddNewUnsecuredFiles(newUnsecuredFilePaths, FileOperationType.Encryption);
         }
 
         private bool CanRemoveFileOperation(FileOperation operation)

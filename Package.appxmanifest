@@ -55,9 +55,7 @@
 			<uap:SupportedFileTypes>
 			  <uap:FileType>.ssef</uap:FileType>
 			</uap:SupportedFileTypes>
-			<uap2:SupportedVerbs>
-			  <uap3:Verb Id="Unlock" Parameters="--unlock &quot;%1&quot;">Unlock File</uap3:Verb>
-			</uap2:SupportedVerbs>
+			<uap:DisplayName>Unlock File</uap:DisplayName>
 		  </uap3:FileTypeAssociation>
 		</uap3:Extension>
 		<com:Extension Category="windows.comServer">
