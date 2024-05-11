@@ -59,7 +59,7 @@ namespace susi_gui_windows.Core.Native
         }
 
         // We're using a byte[] here instead of a string since we should be passing a UTF-8 string.
-        [DllImport(Constants.CoreDLLName, CharSet = )]
+        [DllImport(Constants.CoreDLLName)]
         private static extern IntPtr queue_encryption_task(byte[] target_file, byte[] password);
 
         // We're using a byte[] here instead of a string since we should be passing a UTF-8 string.
