@@ -77,7 +77,7 @@ namespace susi_gui_windows.ViewModels
                     List<TargetFile> newUnsecuredFiles = [];
                     foreach (string path in targetFilePaths)
                     {
-                        var targetFile = new TargetFile(path, FileOperationType.Encryption);
+                        var targetFile = new TargetFile(path, type);
                         newUnsecuredFiles.Add(targetFile);
                     }
                     unsecuredFiles.AddRange(newUnsecuredFiles);
