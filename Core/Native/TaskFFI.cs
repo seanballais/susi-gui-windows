@@ -1,20 +1,35 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace susi_gui_windows.Core.Native
 {
     internal class TaskFFI
     {
-        public static TaskIDWrapper QueueEncryptionTask(string src_file, string password)
+        public static TaskIDWrapper QueueEncryptionTask(string srcFile, string password)
         {
-            IntPtr ptr = queue_encryption_task(src_file, password);
+            byte[] utf8EncodedSrcFile = Encoding.UTF8.GetBytes(srcFile);
+            byte[] utf8EncodedPassword = Encoding.UTF8.GetBytes(password);
+
+            IntPtr ptr = queue_encryption_task(utf8EncodedSrcFile, utf8EncodedPassword);
             if (ptr == IntPtr.Zero)
             {
                 throw new NullFFIPointerException("Failed to queue encryption task due to a core library error.");
+            }
+
+            var taskID = Marshal.PtrToStructure<TaskIDNative>(ptr);
+            return new TaskIDWrapper(taskID, ptr);
+        }
+
+        public static TaskIDWrapper QueueDecryptionTask(string srcFile, string password)
+        {
+            byte[] utf8EncodedSrcFile = Encoding.UTF8.GetBytes(srcFile);
+            byte[] utf8EncodedPassword = Encoding.UTF8.GetBytes(password);
+
+            IntPtr ptr = queue_decryption_task(utf8EncodedSrcFile, utf8EncodedPassword);
+            if (ptr == IntPtr.Zero)
+            {
+                throw new NullFFIPointerException("Failed to queue decryption task due to a core library error.");
             }
 
             var taskID = Marshal.PtrToStructure<TaskIDNative>(ptr);
@@ -43,8 +58,13 @@ namespace susi_gui_windows.Core.Native
             drop_task_id(taskID.Pointer);
         }
 
+        // We're using a byte[] here instead of a string since we should be passing a UTF-8 string.
+        [DllImport(Constants.CoreDLLName, CharSet = )]
+        private static extern IntPtr queue_encryption_task(byte[] target_file, byte[] password);
+
+        // We're using a byte[] here instead of a string since we should be passing a UTF-8 string.
         [DllImport(Constants.CoreDLLName)]
-        private static extern IntPtr queue_encryption_task(string target_file, string password);
+        private static extern IntPtr queue_decryption_task(byte[] target_file, byte[] password);
 
         [DllImport(Constants.CoreDLLName)]
         private static extern IntPtr get_task_status(IntPtr id);

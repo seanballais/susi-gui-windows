@@ -10,7 +10,14 @@ namespace susi_gui_windows.Core
 
         public Task(TaskType type, string target_file, string password)
         {
-            this.id = TaskFFI.QueueEncryptionTask(target_file, password);
+            if (type == TaskType.Encryption)
+            {
+                id = TaskFFI.QueueEncryptionTask(target_file, password);
+            }
+            else if (type == TaskType.Decryption)
+            {
+                id = TaskFFI.QueueDecryptionTask(target_file, password);
+            }
         }
 
         public TaskID ID { get { return id; } }
