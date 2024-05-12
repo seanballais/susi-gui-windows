@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace susi_gui_windows.Core.Native
 {
-    internal class IncorrectPasswordFFIException : Exception
+    internal class PasswordVerificationException : Exception
     {
-        public IncorrectPasswordFFIException(string message) : base(message) { }
+        public PasswordVerificationException(string message) : base(message) { }
     }
 }

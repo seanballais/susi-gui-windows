@@ -55,7 +55,7 @@
 			<uap:SupportedFileTypes>
 			  <uap:FileType>.ssef</uap:FileType>
 			</uap:SupportedFileTypes>
-			<uap:DisplayName>Unlock File</uap:DisplayName>
+			<uap:DisplayName>Susi Encrypted File</uap:DisplayName>
 		  </uap3:FileTypeAssociation>
 		</uap3:Extension>
 		<com:Extension Category="windows.comServer">

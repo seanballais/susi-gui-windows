@@ -49,6 +49,18 @@ namespace susi_gui_windows.GUI
                 if (targetFile.OperationType == FileOperationType.Encryption)
                 {
                     PrimaryButtonText = "Lock File";
+
+                    confirmPasswordBox.Visibility = Visibility.Visible;
+                    confirmPasswordTextbox.IsEnabled = true;
+                    confirmPasswordErrorInfoBar.IsEnabled = true;
+                }
+                else
+                {
+                    PrimaryButtonText = "Unlock File";
+
+                    confirmPasswordBox.Visibility = Visibility.Collapsed;
+                    confirmPasswordTextbox.IsEnabled = false;
+                    confirmPasswordErrorInfoBar.IsEnabled = false;
                 }
                 Bindings.Update();
             }
@@ -65,33 +77,83 @@ namespace susi_gui_windows.GUI
         {
             if (resourcePadlock.Lock(PrimaryButtonAction) == ResourcePadlockStatus.Locked)
             {
-                // Just a check to be sure that we can run the command.
-                if (RunPrimaryButtonActionCommand.CanExecute(null))
-                {
-                    PrimaryButtonAction(password);
-                }
+                PrimaryButtonAction(password);
+                ClearTextBoxes();
 
                 resourcePadlock.Unlock(PrimaryButtonAction);
             }
         }
 
-        private void Dialog_PrimaryButtonClick(ContentDialog sender, ContentDialogButtonClickEventArgs args)
+        private async void Dialog_PrimaryButtonClick(ContentDialog sender, ContentDialogButtonClickEventArgs args)
         {
+            ContentDialogButtonClickDeferral deferral = args.GetDeferral();
+
+            bool canProceed = false;
             if (string.IsNullOrEmpty(passwordTextbox.Password))
             {
                 passwordErrorInfoBar.Message = "Password is required.";
                 passwordErrorInfoBar.IsOpen = true;
+
+                canProceed = false;
             }
 
-            if (string.IsNullOrEmpty(confirmPasswordTextbox.Password))
+            if (targetFile.OperationType == FileOperationType.Encryption)
             {
-                confirmPasswordErrorInfoBar.Message = "Password confirmation is required.";
-                confirmPasswordErrorInfoBar.IsOpen = true;
+                if (string.IsNullOrEmpty(confirmPasswordTextbox.Password))
+                {
+                    confirmPasswordErrorInfoBar.Message = "Password confirmation is required.";
+                    confirmPasswordErrorInfoBar.IsOpen = true;
+
+                    canProceed = false;
+                }
+                else
+                {
+                    canProceed = true;
+                }
+            }
+            else
+            {
+                bool originalPrimaryButtonAvailability = IsPrimaryButtonEnabled;
+                string originalPrimaryButtonText = PrimaryButtonText;
+                bool originalPasswordTextboxAvailability = passwordTextbox.IsEnabled;
+
+                IsPrimaryButtonEnabled = false;
+                PrimaryButtonText = "Checking Password...";
+                passwordTextbox.IsEnabled = false;
+
+                Bindings.Update();
+
+                string password = passwordTextbox.Password;
+                bool isPasswordCorrect = await System.Threading.Tasks.Task.Run(() =>
+                {
+                    return Verification.IsPasswordCorrectForFile(targetFile.FilePath, password);
+                });
+
+                IsPrimaryButtonEnabled = originalPrimaryButtonAvailability;
+                PrimaryButtonText = originalPrimaryButtonText;
+                passwordTextbox.IsEnabled = originalPasswordTextboxAvailability;
+
+                Bindings.Update();
+
+                if (isPasswordCorrect)
+                {
+                    canProceed = true;
+                }
+                else
+                {
+                    passwordTextbox.SelectAll();
+                    passwordTextbox.Focus(FocusState.Programmatic);
+
+                    passwordErrorInfoBar.Message = "Password is incorrect.";
+                    passwordErrorInfoBar.IsOpen = true;
+
+                    canProceed = false;
+                }
             }
 
-            PrimaryButtonCommand.Execute(passwordTextbox.Password);
-
-            ClearTextBoxes();
+            args.Cancel = !canProceed;
+            
+            deferral.Complete();
         }
 
         private void Dialog_CloseButtonClick(ContentDialog sender, ContentDialogButtonClickEventArgs args)
@@ -101,8 +163,7 @@ namespace susi_gui_windows.GUI
 
         private void PasswordTextbox_PasswordChanged(object sender, RoutedEventArgs e)
         {
-            const int MIN_PASSWORD_LENGTH = 12;
-            bool isPasswordLengthOkay = passwordTextbox.Password.Length >= MIN_PASSWORD_LENGTH;
+            bool isPasswordLengthOkay = passwordTextbox.Password.Length >= Constants.MinimumPasswordLength;
             if (string.IsNullOrEmpty(passwordTextbox.Password) || isPasswordLengthOkay)
             {
                 // Let's clear out this one for now. The user might just be re-entering his/her
@@ -156,10 +217,16 @@ namespace susi_gui_windows.GUI
             string passwordConfirmation = confirmPasswordTextbox.Password;
 
             bool isPasswordSet = !string.IsNullOrEmpty(password);
-            bool isPasswordConfirmationSet = !string.IsNullOrEmpty(passwordConfirmation);
-            bool arePasswordsMatching = password.Equals(passwordConfirmation);
+            bool isPasswordProperLength = password.Length >= Constants.MinimumPasswordLength;
+            bool condition = isPasswordSet && isPasswordProperLength;
+            if (targetFile is not null && targetFile.OperationType == FileOperationType.Encryption)
+            {
+                bool isPasswordConfirmationSet = !string.IsNullOrEmpty(passwordConfirmation);
+                bool arePasswordsMatching = password.Equals(passwordConfirmation);
+                condition = condition && isPasswordConfirmationSet && arePasswordsMatching;
+            }
 
-            return isPasswordSet && isPasswordConfirmationSet && arePasswordsMatching;
+            return condition;
         }
     }
 }

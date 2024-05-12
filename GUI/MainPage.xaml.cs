@@ -77,6 +77,7 @@ namespace susi_gui_windows.GUI
                     string numQueuedFilesSubText = $"{numQueuedFiles} {fileWord} in Queue";
                     passwordRequestDialog.Title = $"Password Required ({numQueuedFilesSubText})";
                     passwordRequestDialog.TargetFile = targetFile;
+                    // V - Move to the dialog itself?
                     passwordRequestDialog.PrimaryButtonAction = (string password) => {
                         viewModel.AddFileOperation(targetFile, password);
                     };

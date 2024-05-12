@@ -3,7 +3,7 @@ using System.Text;
 
 namespace susi_gui_windows.Core.Native
 {
-    internal class ValidationFFI
+    internal class VerificationFFI
     {
         public static bool IsPasswordCorrectForFile(string filePath, string password)
         {
