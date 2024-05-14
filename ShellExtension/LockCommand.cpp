@@ -65,10 +65,18 @@ public:
 		return SHStrDup(c_szVerbDisplayName, ppszName);
 	}
 
+	// Based on: https://github.com/microsoft
+	//							   /PowerToys
+	//                             /blob
+	//                             /fc214a80c535d15b775a820b34981caa3b31d177
+	//                             /src/modules/powerrename
+	//                             /PowerRenameContextMenu/dllmain.cpp
 	IFACEMETHODIMP GetIcon(IShellItemArray* /* psiItemArray */, LPWSTR* ppszIcon)
 	{
-		*ppszIcon = NULL;
-		return E_NOTIMPL;
+		std::wstring iconPath = GetDLLFolderPath();
+		iconPath.append(L"\\Assets\\Susi.ico");
+
+		return SHStrDup(iconPath.c_str(), ppszIcon);
 	}
 
 	IFACEMETHODIMP GetToolTip(IShellItemArray* /* psiItemArray */, LPWSTR* ppszInfotip)
@@ -225,8 +233,10 @@ IFACEMETHODIMP CExplorerCommandLock::Invoke(IShellItemArray* psia, IBindCtx* /* 
 
 // Based on: https://github.com/microsoft
 //							   /PowerToys
-//							   /blob/main/src/modules
-//							   /powerrename/PowerRenameContextMenu/dllmain.cpp
+//                             /blob
+//                             /fc214a80c535d15b775a820b34981caa3b31d177
+//                             /src/modules/powerrename
+//                             /PowerRenameContextMenu/dllmain.cpp
 //      and: https://bloomfield.online/posts/introduction-to-win32-named-pipes-cpp/
 HRESULT CExplorerCommandLock::CreateNamedPipeServerAndWaitForConns()
 {

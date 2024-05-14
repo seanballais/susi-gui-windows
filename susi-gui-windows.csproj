@@ -15,6 +15,13 @@
     <AssemblyName>Susi</AssemblyName>
     <Authors>Sean Ballais</Authors>
     <BaseOutputPath>bin\build\app</BaseOutputPath>
+    <ApplicationIcon>Assets\Susi.ico</ApplicationIcon>
+    <AssemblyVersion>0.1.0</AssemblyVersion>
+    <Title>Susi</Title>
+    <Version>0.1.0</Version>
+    <Description>Protect your files from being easily viewed by anyone.</Description>
+    <PackageIcon>Square44x44Logo.scale-400.png</PackageIcon>
+    <PackageProjectUrl>https://github.com/seanballais/susi-gui-windows</PackageProjectUrl>
   </PropertyGroup>
   <ItemGroup>
     <None Remove="GUI\MainPage.xaml" />
@@ -23,7 +30,6 @@
 
   <ItemGroup>
     <Content Include="Assets\SplashScreen.scale-200.png" />
-    <Content Include="Assets\LockScreenLogo.scale-200.png" />
     <Content Include="Assets\Square150x150Logo.scale-200.png" />
     <Content Include="Assets\Square44x44Logo.scale-200.png" />
     <Content Include="Assets\Square44x44Logo.targetsize-24_altform-unplated.png" />
@@ -52,12 +58,29 @@
     <ProjectCapability Include="Msix" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Update="Properties\Resources.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Update="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
     <Page Update="GUI\PasswordRequestDialog.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Update="GUI\MainPage.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <None Update="Assets\Square44x44Logo.scale-400.png">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
     <None Update="ShellExtension.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
