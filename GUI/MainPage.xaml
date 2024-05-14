@@ -16,15 +16,21 @@
     <ListView x:Name="TaskListView" ItemsSource="{x:Bind viewModel.FileOperations, Mode=OneWay}">
         <ListView.ItemTemplate>
             <DataTemplate x:DataType="vm:FileOperation">
-                <StackPanel Orientation="Vertical">
-                    <Grid >
+                <StackPanel Orientation="Vertical" Margin="0, 15, 0, 15">
+                    <Grid Margin="0, 0, 0, 4">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto" />
                             <ColumnDefinition Width="*" />
                             <ColumnDefinition Width="Auto" />
                         </Grid.ColumnDefinitions>
-                        <Image Width="32px" Height="32px" Grid.Column="0" Source="{x:Bind FileIcon}" />
-                        <StackPanel Grid.Column="1" Orientation="Vertical" >
+                        <Image
+                            Width="35px"
+                            Height="35px"
+                            Margin="0, 0, 4, 0"
+                            Grid.Column="0"
+                            Source="{x:Bind FileIcon}"
+                        />
+                        <StackPanel Grid.Column="1" Orientation="Vertical" Margin="3, 0, 4, 0">
                             <TextBlock
                                 Text="{
                                     x:Bind gui:FileOperationGUIUtils.CreateFileOperationTitle(FileName, OperationType, State),
@@ -54,6 +60,7 @@
                         </StackPanel>
                         <Button
                             Grid.Column="2"
+                            Margin="3, 0, 0, 0"
                             CommandParameter="{x:Bind Self, Mode=OneWay}"
                             Command="{x:Bind ViewModel.RemoveFileOperationCommand}"
                             Visibility="{
@@ -64,7 +71,7 @@
                             <SymbolIcon Symbol="Clear" />
                         </Button>
                     </Grid>
-                    <StackPanel Orientation="Vertical">
+                    <StackPanel Orientation="Vertical" Margin="0, 3, 0, 0">
                         <InfoBar
                             Title="{
                                 x:Bind gui:FileOperationGUIUtils.CreateInfoBarTitle(State),

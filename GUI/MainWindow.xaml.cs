@@ -5,7 +5,6 @@ using Windows.Graphics;
 
 using susi_gui_windows.ViewModels;
 using susi_gui_windows.GUI;
-using Microsoft.UI.Xaml.Controls;
 using System.Threading.Tasks;
 
 namespace susi_gui_windows
