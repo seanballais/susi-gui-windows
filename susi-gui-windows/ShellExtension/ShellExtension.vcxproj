@@ -78,11 +78,11 @@
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableUAC>false</EnableUAC>
-      <AdditionalDependencies>shlwapi.lib;comctl32.lib;propsys.lib;"$(SolutionDir)susi_core.dll.lib";%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>shlwapi.lib;comctl32.lib;propsys.lib;"$(SolutionDir)susi-gui-windows\susi_core.dll.lib";%(AdditionalDependencies)</AdditionalDependencies>
       <ModuleDefinitionFile>dll.def</ModuleDefinitionFile>
     </Link>
     <PostBuildEvent>
-      <Command>xcopy "$(TargetPath)" "$(SolutionDir)$(TargetFileName)" /y</Command>
+      <Command>xcopy "$(TargetPath)" "$(SolutionDir)susi-gui-windows\$(TargetFileName)" /y</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -104,11 +104,11 @@
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableUAC>false</EnableUAC>
-      <AdditionalDependencies>shlwapi.lib;comctl32.lib;propsys.lib;"$(SolutionDir)susi_core.dll.lib";%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>shlwapi.lib;comctl32.lib;propsys.lib;"$(SolutionDir)susi-gui-windows\susi_core.dll.lib";%(AdditionalDependencies)</AdditionalDependencies>
       <ModuleDefinitionFile>dll.def</ModuleDefinitionFile>
     </Link>
     <PostBuildEvent>
-      <Command>xcopy "$(TargetPath)" "$(SolutionDir)$(TargetFileName)" /y</Command>
+      <Command>xcopy "$(TargetPath)" "$(SolutionDir)susi-gui-windows\$(TargetFileName)" /y</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
