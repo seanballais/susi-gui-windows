@@ -402,3 +402,4 @@ bin/
 obj/
 susi_core.dll
 susi_core.dll.lib
+ShellExtension.dll
