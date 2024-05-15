@@ -156,7 +156,7 @@ namespace susi_gui_windows.GUI
             deferral.Complete();
         }
 
-        private void Dialog_CloseButtonClick(ContentDialog sender, ContentDialogButtonClickEventArgs args)
+        private void Dialog_CancelButtonClick(ContentDialog sender, ContentDialogButtonClickEventArgs args)
         {
             ClearTextBoxes();
         }

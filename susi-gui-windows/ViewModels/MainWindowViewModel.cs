@@ -91,6 +91,26 @@ namespace susi_gui_windows.ViewModels
             fileOperations.Remove(operation);
         }
 
+        public bool HasOngoingOperations()
+        {
+            foreach (var operation in fileOperations)
+            {
+                if (operation.State == TaskProgress.Queued
+                    || operation.State == TaskProgress.Processing
+                    || operation.State == TaskProgress.Finalizing)
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        public bool HasQueuedFiles()
+        {
+            return unsecuredFiles.Count > 0;
+        }
+
         private void NewUnsecuredFilesMessageCallback(NewUnsecuredFilesMessage message)
         {
             string[] newUnsecuredFilePaths = message.Value;

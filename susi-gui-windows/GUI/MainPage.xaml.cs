@@ -2,7 +2,7 @@ using System;
 using System.Collections.Specialized;
 
 using Microsoft.UI.Xaml.Controls;
-
+using Microsoft.UI.Xaml.Media;
 using susi_gui_windows.Core;
 using susi_gui_windows.Utilities;
 using susi_gui_windows.ViewModels;
@@ -15,11 +15,12 @@ namespace susi_gui_windows.GUI
     /// <summary>
     /// An empty page that can be used on its own or navigated to within a Frame.
     /// </summary>
-    internal sealed partial class MainPage : Page
+    internal sealed partial class MainPage : Page, IControllableDialogs
     {
         private MainWindowViewModel viewModel;
         private PasswordRequestDialog passwordRequestDialog;
         private ResourcePadlock resourcePadlock;
+        private bool areContentDialogsHidden;
 
         public MainPage(MainWindowViewModel viewModel)
         {
@@ -28,6 +29,8 @@ namespace susi_gui_windows.GUI
             this.viewModel = viewModel;
             resourcePadlock = new ResourcePadlock();
 
+            areContentDialogsHidden = false;
+
             // We should listen to changes to the unsecured files collection.
             this.viewModel.UnsecuredFiles.CollectionChanged += UnsecuredFiles_CollectionChanged;
         }
@@ -35,6 +38,24 @@ namespace susi_gui_windows.GUI
         public async System.Threading.Tasks.Task InitializeCustomComponents()
         {
             await InitializePasswordRequestDialog();
+        }
+
+        public void HideCurrentDialog()
+        {
+            areContentDialogsHidden = true;
+
+            resourcePadlock.Unlock(passwordRequestDialog);
+            passwordRequestDialog.Hide();
+        }
+
+        public void UnhideCurrentDialog()
+        {
+            areContentDialogsHidden = false;
+
+            if (viewModel.UnsecuredFiles.Count > 0)
+            {
+                AskPasswordForFilesViaDialog();
+            }
         }
 
         private async System.Threading.Tasks.Task InitializePasswordRequestDialog()
@@ -70,6 +91,11 @@ namespace susi_gui_windows.GUI
                 Logging.Info("This should only show once.");
                 while (viewModel.UnsecuredFiles.Count > 0)
                 {
+                    if (areContentDialogsHidden)
+                    {
+                        break;
+                    }
+
                     int numQueuedFiles = viewModel.UnsecuredFiles.Count;
                     TargetFile targetFile = viewModel.UnsecuredFiles[0];
 
@@ -77,7 +103,6 @@ namespace susi_gui_windows.GUI
                     string numQueuedFilesSubText = $"{numQueuedFiles} {fileWord} in Queue";
                     passwordRequestDialog.Title = $"Password Required ({numQueuedFilesSubText})";
                     passwordRequestDialog.TargetFile = targetFile;
-                    // V - Move to the dialog itself?
                     passwordRequestDialog.PrimaryButtonAction = (string password) => {
                         viewModel.AddFileOperation(targetFile, password);
                     };
@@ -85,14 +110,21 @@ namespace susi_gui_windows.GUI
                     try
                     {
                         await passwordRequestDialog.ShowAsync();
+
+                        // Makes sure that the file is not removed when the app's closing confirmation dialog
+                        // is going to appear. This ensures that it's only removed when the user has directly
+                        // interacted with the password request dialog, either via the buttons or the Escape
+                        // key.
+                        if (!areContentDialogsHidden)
+                        {
+                            viewModel.UnsecuredFiles.RemoveAt(0);
+                        }                        
                     }
                     catch (Exception e)
                     {
                         // TODO: This should use an error logging function.
                         Logging.Info($"Exception found: {e}");
                     }
-
-                    viewModel.UnsecuredFiles.RemoveAt(0);
                 }
 
                 resourcePadlock.Unlock(passwordRequestDialog);
