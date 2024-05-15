@@ -27,6 +27,8 @@ namespace susi_gui_windows
         {
             InitializeComponent();
 
+            AppWindow.SetIcon(Constants.AppIconPath);
+
             // Set to a strict window size.
             AppWindow.Resize(new SizeInt32(550, 600));
 

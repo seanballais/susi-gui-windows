@@ -8,6 +8,7 @@ namespace susi_gui_windows
 {
     internal class Constants
     {
+        public static string AppIconPath = @"Assets\Susi.ico";
         public const uint MinimumPasswordLength = 12;
     }
 }

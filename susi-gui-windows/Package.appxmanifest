@@ -17,7 +17,7 @@
   <Identity
     Name="c929009c-b0dd-4a96-a0e1-9e008a0ea53b"
     Publisher="CN=Sean Francis N. Ballais"
-    Version="0.1.0.0" />
+    Version="0.1.2.0" />
 
   <mp:PhoneIdentity PhoneProductId="c929009c-b0dd-4a96-a0e1-9e008a0ea53b" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
 
