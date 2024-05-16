@@ -7,6 +7,7 @@
   xmlns:desktop="http://schemas.microsoft.com/appx/manifest/desktop/windows10"
   xmlns:desktop4="http://schemas.microsoft.com/appx/manifest/desktop/windows10/4"
   xmlns:desktop5="http://schemas.microsoft.com/appx/manifest/desktop/windows10/5"
+  xmlns:desktop9="http://schemas.microsoft.com/appx/manifest/desktop/windows10/9"
   xmlns:uap="http://schemas.microsoft.com/appx/manifest/uap/windows10"
   xmlns:uap2="http://schemas.microsoft.com/appx/manifest/uap/windows10/2"
   xmlns:uap3="http://schemas.microsoft.com/appx/manifest/uap/windows10/3"
@@ -15,11 +16,10 @@
   IgnorableNamespaces="com desktop desktop4 desktop5 uap uap2 uap3 uap10 rescap">
 
   <Identity
-    Name="c929009c-b0dd-4a96-a0e1-9e008a0ea53b"
+    Name="susi-c929009c-b0dd-4a96-a0e1-9e008a0ea53b"
     Publisher="CN=Sean Francis N. Ballais"
-    Version="0.1.2.0" />
-
-  <mp:PhoneIdentity PhoneProductId="c929009c-b0dd-4a96-a0e1-9e008a0ea53b" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
+    Version="0.1.0.0"
+	ProcessorArchitecture="x64" />
 
   <Properties>
     <DisplayName>Susi</DisplayName>
@@ -28,8 +28,8 @@
   </Properties>
 
   <Dependencies>
-    <TargetDeviceFamily Name="Windows.Universal" MinVersion="10.0.17763.0" MaxVersionTested="10.0.19041.0" />
-    <TargetDeviceFamily Name="Windows.Desktop" MinVersion="10.0.17763.0" MaxVersionTested="10.0.19041.0" />
+    <TargetDeviceFamily Name="Windows.Universal" MinVersion="10.0.17763.0" MaxVersionTested="10.0.22631.0" />
+    <TargetDeviceFamily Name="Windows.Desktop" MinVersion="10.0.17763.0" MaxVersionTested="10.0.22631.0" />
   </Dependencies>
 
   <Resources>
@@ -61,7 +61,7 @@
 		</uap3:Extension>
 		<com:Extension Category="windows.comServer">
 		  <com:ComServer>
-			<com:SurrogateServer DisplayName="ContextMenu">
+			<com:SurrogateServer DisplayName="Susi Shell Extension Context Menu">
 			  <com:Class Id="D56A16FE-D6DD-41A4-A2E1-08C05AB083C7" Path="ShellExtension.dll" ThreadingModel="STA" />
 			</com:SurrogateServer>
 		  </com:ComServer>
@@ -76,8 +76,7 @@
 	  </Extensions>
     </Application>
   </Applications>
-
   <Capabilities>
-    <rescap:Capability Name="runFullTrust" />
+	  <rescap:Capability Name="runFullTrust" />
   </Capabilities>
 </Package>
