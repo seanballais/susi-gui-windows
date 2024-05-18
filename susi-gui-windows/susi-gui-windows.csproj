@@ -14,7 +14,7 @@
     <PlatformTarget>x64</PlatformTarget>
     <AssemblyName>Susi</AssemblyName>
     <Authors>Sean Ballais</Authors>
-    <BaseOutputPath>bin\build\app</BaseOutputPath>
+    <BaseOutputPath>$(SolutionDir)bin\build\susi-gui-windows</BaseOutputPath>
     <ApplicationIcon>Assets\Susi.ico</ApplicationIcon>
 	<VersionPrefix>0.1.0.0</VersionPrefix>
 	<VersionSuffix>alpha1</VersionSuffix>
@@ -249,6 +249,6 @@
     <Optimize>False</Optimize>
   </PropertyGroup>
   <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
-    <Exec Command="powershell.exe -File &quot;$(SolutionDir)scripts/update-version-strings.ps1&quot;" />
+    <Exec Command="powershell.exe -File &quot;$(SolutionDir)scripts\update-version-strings.ps1&quot;" />
   </Target>
 </Project>

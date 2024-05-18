@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Based on: https://github.com/microsoft/PowerToys/blob/3cc7c4da0b2468230849fec2054669d8628fa0c9/src/Version.props -->
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <VersionPrefix>0.1.0.0</VersionPrefix>
+    <VersionSuffix>alpha1</VersionSuffix>
+    <Version>$(VersionPrefix)-$(VersionSuffix)</Version>
+  </PropertyGroup>
+</Project>

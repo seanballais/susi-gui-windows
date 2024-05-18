@@ -1,3 +1,19 @@
+# Susi
+# Copyright (C) 2024  Sean Francis N. Ballais
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
 cls
 
 Write-Host "Updating version strings...";
@@ -21,25 +37,4 @@ $projectVersion = "$projectVersionPrefix-$projectVersionSuffix";
 
 Write-Host "Found Version: $projectVersion";
 
-# TODO: Update version string in Package.appxmanifest.
-
-Write-Host "[=] Updating version string in the installer project..."
-
-$installerDirPath = (Get-Item ../installer).FullName;
-cd $installerDirPath;
-
-$cwd = (Get-Item .).FullName;
-Write-Host "Current Working Directory: $cwd";
-
-$installerProjectFileName = "installer.wixproj";
-$installerProjectPath = Join-Path -Path $installerDirPath -ChildPath $installerProjectFileName;
-
-Write-Host "Installer Project File to Update: $installerProjectPath";
-
-[xml] $installerProjectContents = Get-Content -Path $installerProjectPath;
-$installerProjectConstants = $installerProjectContents.SelectSingleNode("//Project/Target[@Name='PreBuild']/PropertyGroup[1]/DefineConstants");
-$installerProjectConstants.InnerText = "VersionPrefix=$projectVersionPrefix;VersionSuffix=$projectVersionSuffix;Version=`$(VersionPrefix)-`$(VersionSuffix)";
-
-$installerProjectContents.Save($installerProjectPath);
-
-Write-Host "Updated installer project file."
+Write-Host "TODO: Update version string in Package.appxmanifest.";

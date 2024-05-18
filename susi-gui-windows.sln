@@ -5,6 +5,7 @@ VisualStudioVersion = 17.9.34622.214
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "susi-gui-windows", "susi-gui-windows\susi-gui-windows.csproj", "{C11137C5-E91D-485B-A9F5-1783F6668CA9}"
 	ProjectSection(ProjectDependencies) = postProject
+		{0E4B455B-5C43-469B-9D52-2E477434CB03} = {0E4B455B-5C43-469B-9D52-2E477434CB03}
 		{F495F20B-4808-41A4-9E6F-31C66B514538} = {F495F20B-4808-41A4-9E6F-31C66B514538}
 	EndProjectSection
 EndProject
@@ -18,7 +19,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{B7DD6F7E-DEF8-4E67-B5B7-07EF123DB6F0}") = "installer", "installer\installer.wixproj", "{0E4B455B-5C43-469B-9D52-2E477434CB03}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "scripts", "scripts", "{EDF9D2D9-0C15-4D95-AAB9-191356ECFA29}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "scripts", "scripts", "{F6E42A99-5C93-4E31-A3CC-935BA3BB05F3}"
 	ProjectSection(SolutionItems) = preProject
 		scripts\update-version-strings.ps1 = scripts\update-version-strings.ps1
 	EndProjectSection
@@ -76,7 +77,7 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{EDF9D2D9-0C15-4D95-AAB9-191356ECFA29} = {994EB8B5-6CEF-41B3-8300-2466621C2050}
+		{F6E42A99-5C93-4E31-A3CC-935BA3BB05F3} = {994EB8B5-6CEF-41B3-8300-2466621C2050}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {BD9BEBE9-36A6-463C-A8DB-218EB89F1802}

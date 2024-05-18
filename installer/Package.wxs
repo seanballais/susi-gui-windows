@@ -1,9 +1,0 @@
-﻿<Wix xmlns="http://wixtoolset.org/schemas/v4/wxs">
-  <Package Name="Susi" Manufacturer="Sean Francis N. Ballais" Version="$(VersionPrefix)" UpgradeCode="6dd2d4bd-857c-439c-adfe-0294fceacd2d">
-    <MajorUpgrade DowngradeErrorMessage="!(loc.DowngradeError)" />
-	<MediaTemplate EmbedCab="yes" />
-    <Feature Id="Main">
-      <ComponentGroupRef Id="Susi" />
-    </Feature>
-  </Package>
-</Wix>
