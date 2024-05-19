@@ -18,8 +18,16 @@
     <ApplicationIcon>Assets\Susi.ico</ApplicationIcon>
 	<VersionPrefix>0.1.0.0</VersionPrefix>
 	<VersionSuffix>alpha1</VersionSuffix>
-    <WindowsPackageType>None</WindowsPackageType>
 	<DebugType>full</DebugType>
+	<GenerateAppInstallerFile>False</GenerateAppInstallerFile>
+	<AppxPackageSigningEnabled>True</AppxPackageSigningEnabled>
+	<PackageCertificateThumbprint>A48788096C20813950DC887E02E8142C8A5A1D51</PackageCertificateThumbprint>
+	<AppxPackageSigningTimestampDigestAlgorithm>SHA256</AppxPackageSigningTimestampDigestAlgorithm>
+	<AppxAutoIncrementPackageRevision>False</AppxAutoIncrementPackageRevision>
+	<AppxSymbolPackageEnabled>False</AppxSymbolPackageEnabled>
+	<GenerateTestArtifacts>True</GenerateTestArtifacts>
+	<AppxBundle>Never</AppxBundle>
+	<HoursBetweenUpdateChecks>0</HoursBetweenUpdateChecks>
   </PropertyGroup>
   <ItemGroup>
     <None Remove="GUI\MainPage.xaml" />
@@ -248,4 +256,13 @@
   <PropertyGroup Condition="'$(DisableHasPackageAndPublishMenuAddedByProject)'!='true' and '$(EnableMsixTooling)'=='true'">
     <HasPackageAndPublishMenu>true</HasPackageAndPublishMenu>
   </PropertyGroup>
+  <ItemGroup>
+    <Compile Remove="C:\Users\sean\.nuget\packages\microsoft.windowsappsdk\1.5.240428000\buildTransitive\..\include\MddBootstrapAutoInitializer.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Remove="C:\Users\sean\.nuget\packages\microsoft.windowsappsdk\1.5.240428000\buildTransitive\..\include\WindowsAppSDK-VersionInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Remove="C:\Users\sean\.nuget\packages\microsoft.windowsappsdk\1.5.240428000\buildTransitive\..\include\MddBootstrapAutoInitializer.cs" />
+  </ItemGroup>
 </Project>

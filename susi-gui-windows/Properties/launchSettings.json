@@ -1,8 +1,7 @@
 {
   "profiles": {
     "Susi": {
-      "commandName": "Project",
-      "commandLineArgs": "\"C:\\Users\\sean\\Packages\\Shared Development Packages\\All\\No Man's Land\\5MB - Copy (5).bin.ssef\"",
+      "commandName": "MsixPackage",
       "nativeDebugging": true
     }
   }
