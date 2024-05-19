@@ -78,7 +78,7 @@
 		</uap3:Extension>
 		<com:Extension Category="windows.comServer">
 		  <com:ComServer>
-			<com:SurrogateServer DisplayName="Susi Shell Extension Context Menu">
+			<com:SurrogateServer DisplayName="Susi Shell Extension">
 			  <com:Class Id="D56A16FE-D6DD-41A4-A2E1-08C05AB083C7" Path="ShellExtension.dll" ThreadingModel="STA" />
 			</com:SurrogateServer>
 		  </com:ComServer>

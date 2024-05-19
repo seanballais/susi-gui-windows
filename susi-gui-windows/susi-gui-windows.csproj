@@ -18,8 +18,8 @@
     <ApplicationIcon>Assets\Susi.ico</ApplicationIcon>
 	<VersionPrefix>0.1.0.0</VersionPrefix>
 	<VersionSuffix>alpha1</VersionSuffix>
-    <AssemblyVersion>0.1.0.0</AssemblyVersion>
     <WindowsPackageType>None</WindowsPackageType>
+	<DebugType>full</DebugType>
   </PropertyGroup>
   <ItemGroup>
     <None Remove="GUI\MainPage.xaml" />
@@ -229,6 +229,9 @@
       <Pack>True</Pack>
       <PackagePath>\</PackagePath>
     </None>
+    <None Update="LICENSE.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Update="ShellExtension.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -245,10 +248,4 @@
   <PropertyGroup Condition="'$(DisableHasPackageAndPublishMenuAddedByProject)'!='true' and '$(EnableMsixTooling)'=='true'">
     <HasPackageAndPublishMenu>true</HasPackageAndPublishMenu>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <Optimize>False</Optimize>
-  </PropertyGroup>
-  <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
-    <Exec Command="powershell.exe -File &quot;$(SolutionDir)scripts\update-version-strings.ps1&quot;" />
-  </Target>
 </Project>
