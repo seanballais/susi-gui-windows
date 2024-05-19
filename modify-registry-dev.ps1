@@ -16,49 +16,61 @@ if ($ModificationType -eq "Addition") {
 		Exit;
 	}
 
-	# Add SeanBallais.Susi keys.
-	if (-not (Test-Path 'HKCU:\Software\Classes\SeanBallais.Susi')) {
-		New-Item -Path 'HKCU:\Software\Classes\SeanBallais.Susi' -Force | Out-Null
+	# Add Susi.EncryptedFile keys.
+	if (-not (Test-Path 'HKCU:\Software\Classes\Susi.EncryptedFile')) {
+		New-Item -Path 'HKCU:\Software\Classes\Susi.EncryptedFile' -Force | Out-Null
 	}
 
-	New-ItemProperty -Path 'HKCU:\Software\Classes\SeanBallais.Susi' -Name '(Default)' -Value "Susi" -PropertyType String -Force;
+	New-ItemProperty -Path 'HKCU:\Software\Classes\Susi.EncryptedFile' -Name '(Default)' -Value "Susi Encrypted File" -PropertyType String -Force;
 
-	if (-not (Test-Path 'HKCU:\Software\Classes\SeanBallais.Susi\DefaultIcon')) {
-		New-Item -Path 'HKCU:\Software\Classes\SeanBallais.Susi\DefaultIcon' -Force | Out-Null
+	if (-not (Test-Path 'HKCU:\Software\Classes\Susi.EncryptedFile\DefaultIcon')) {
+		New-Item -Path 'HKCU:\Software\Classes\Susi.EncryptedFile\DefaultIcon' -Force | Out-Null
 	}
 	
-	New-ItemProperty -Path 'HKCU:\Software\Classes\SeanBallais.Susi\DefaultIcon' -Name '(Default)' -Value "$ExePath,0" -PropertyType String -Force;
+	New-ItemProperty -Path 'HKCU:\Software\Classes\Susi.EncryptedFile\DefaultIcon' -Name '(Default)' -Value "$ExePath,0" -PropertyType String -Force;
 
 	# Add .ssef keys.
 	if (-not (Test-Path 'HKCU:\Software\Classes\.ssef')) {
 		New-Item -Path 'HKCU:\Software\Classes\.ssef' -Force | Out-Null
 	}
 
-	New-ItemProperty -Path 'HKCU:\Software\Classes\.ssef' -Name '(Default)' -Value "SeanBallais.Susi" -PropertyType String -Force;
+	New-ItemProperty -Path 'HKCU:\Software\Classes\.ssef' -Name '(Default)' -Value "Susi.EncryptedFile" -PropertyType String -Force;
 
-	# Add Applications\SeanBallais.Susi keys.
-	if (-not (Test-Path 'HKCU:\Software\Classes\Applications\SeanBallais.Susi')) {
-		New-Item -Path 'HKCU:\Software\Classes\Applications\SeanBallais.Susi' -Force | Out-Null
+	if (-not (Test-Path 'HKCU:\Software\Classes\.ssef\OpenWithProgids')) {
+		New-Item -Path 'HKCU:\Software\Classes\.ssef\OpenWithProgids' -Force | Out-Null
 	}
 
-	if (-not (Test-Path 'HKCU:\Software\Classes\Applications\SeanBallais.Susi\Shell')) {
-		New-Item -Path 'HKCU:\Software\Classes\Applications\SeanBallais.Susi\Shell' -Force | Out-Null
+	New-ItemProperty -Path 'HKCU:\Software\Classes\.ssef\OpenWithProgids' -Name 'Susi.EncryptedFile' -Value "" -PropertyType String -Force;
+
+	# Add Applications\Susi.exe keys.
+	if (-not (Test-Path 'HKCU:\Software\Classes\Applications\Susi.exe')) {
+		New-Item -Path 'HKCU:\Software\Classes\Applications\Susi.exe' -Force | Out-Null
 	}
 
-	if (-not (Test-Path 'HKCU:\Software\Classes\Applications\SeanBallais.Susi\Shell\open')) {
-		New-Item -Path 'HKCU:\Software\Classes\Applications\SeanBallais.Susi\Shell\open' -Force | Out-Null
+	if (-not (Test-Path 'HKCU:\Software\Classes\Applications\Susi.exe\SupportedTypes')) {
+		New-Item -Path 'HKCU:\Software\Classes\Applications\Susi.exe\SupportedTypes' -Force | Out-Null
 	}
 
-	if (-not (Test-Path 'HKCU:\Software\Classes\Applications\SeanBallais.Susi\Shell\open\command')) {
-		New-Item -Path 'HKCU:\Software\Classes\Applications\SeanBallais.Susi\Shell\open\command' -Force | Out-Null
+	New-ItemProperty -Path 'HKCU:\Software\Classes\Applications\Susi.exe\SupportedTypes' -Name ".ssef" -Value "" -PropertyType String -Force;
+
+	if (-not (Test-Path 'HKCU:\Software\Classes\Applications\Susi.exe\Shell')) {
+		New-Item -Path 'HKCU:\Software\Classes\Applications\Susi.exe\Shell' -Force | Out-Null
 	}
 
-	New-ItemProperty -Path 'HKCU:\Software\Classes\Applications\SeanBallais.Susi\Shell\open\command' -Name '(Default)' -Value "`"$ExePath`" `"`%1`""
+	if (-not (Test-Path 'HKCU:\Software\Classes\Applications\Susi.exe\Shell\open')) {
+		New-Item -Path 'HKCU:\Software\Classes\Applications\Susi.exe\Shell\open' -Force | Out-Null
+	}
+
+	if (-not (Test-Path 'HKCU:\Software\Classes\Applications\Susi.exe\Shell\open\command')) {
+		New-Item -Path 'HKCU:\Software\Classes\Applications\Susi.exe\Shell\open\command' -Force | Out-Null
+	}
+
+	New-ItemProperty -Path 'HKCU:\Software\Classes\Applications\Susi.exe\Shell\open\command' -Name '(Default)' -Value "`"$ExePath`" `"`%1`""
 }
 elseif ($ModificationType -eq "Clean") {
-	Remove-Item -Path 'HKCU:\Software\Classes\SeanBallais.Susi' -Force
+	Remove-Item -Path 'HKCU:\Software\Classes\Susi.EncryptedFile' -Force
 	Remove-Item -Path 'HKCU:\Software\Classes\.ssef' -Force
-	Remove-Item -Path 'HKCU:\Software\Classes\Applications\SeanBallais.Susi' -Force
+	Remove-Item -Path 'HKCU:\Software\Classes\Applications\Susi.exe' -Force
 }
 else {
 	Write-Host "Error: Unknown modification type specified.";
