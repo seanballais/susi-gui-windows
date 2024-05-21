@@ -70,7 +70,7 @@ https://github.com/seanballais/susi-gui-windows/assets/7175885/28afeada-90bf-465
 _Removing the certificate that was added during the installation of Susi._
 
 ## Using Susi
-Susi provides two features -- encryption _and_ decryption of files, both of which may also be referred to as "locking" and "unlocking" files, respectively. The app encrypts to and decrypts from a custom Susi Encrypted File (a `.ssef` file). It does not support any other encryption formats. You may check [Susi Specifications](#susi-specifications) for details on the custom `.ssef` file format.
+Susi provides two features -- encryption _and_ decryption of files, both of which may also be referred to as "locking" and "unlocking" files, respectively. The app encrypts to and decrypts from a custom Susi Encrypted File (a `.ssef` file). It does not support any other encryption formats. You may check [Susi Software Specifications](#susi-software-specifications) to know where to learn about details on the custom `.ssef` file format.
 
 ### Encryption
 Encrypting a file with Susi is easy. The following steps will guide you how to encrypt a file.
