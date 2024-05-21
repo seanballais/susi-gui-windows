@@ -13,7 +13,7 @@ Susi fully supports Windows 11, but has partial support for Windows 10. Only fil
 Susi is composed of two main components: (a) Susi GUI, and (b) Susi Core. Susi GUI is the GUI component of the app (this repository holds the code for the Windows version), while [Susi Core](https://github.com/seanballais/susi-core) is where most of the major operations, such as encryption and decryption, are done.
 
 ## Built With
-Susi GUI is built with C# (.NET 8 and WinUI 3) and a small, but important, component in C++. Susi Core is built completely in Rust. The installer for Susi GUI is built with [InnoSetup](https://jrsoftware.org/isinfo.php).
+Susi GUI is built with C# (.NET 8 and WinUI 3) and a small, but important, component in C++. Susi Core is built completely in Rust. The installer for Susi GUI is mostly built with [InnoSetup](https://jrsoftware.org/isinfo.php), with an internal script written in PowerShell.
 
 ## Development
 Due to personal time constraints, a complete documentation on how to work on this project will not be available. However, the basic requirements are Visual Studio 2022, .NET 8 SDK, and Windows App SDK 1.5.
