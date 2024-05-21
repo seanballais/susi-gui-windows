@@ -30,7 +30,7 @@
   xmlns:uap3="http://schemas.microsoft.com/appx/manifest/uap/windows10/3"
   xmlns:uap10="http://schemas.microsoft.com/appx/manifest/uap/windows10/10"
   xmlns:rescap="http://schemas.microsoft.com/appx/manifest/foundation/windows10/restrictedcapabilities"
-  IgnorableNamespaces="com desktop desktop4 desktop5 uap uap2 uap3 uap10 rescap">
+  IgnorableNamespaces="com desktop desktop4 desktop5 desktop9 uap uap2 uap3 uap10 rescap">
 
   <Identity
     Name="susi-c929009c-b0dd-4a96-a0e1-9e008a0ea53b"

@@ -419,3 +419,6 @@ obj/
 susi_core.dll
 susi_core.dll.lib
 ShellExtension.dll
+
+# Let's not add binaries to the Git repo.
+installer/redists/*
