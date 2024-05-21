@@ -24,7 +24,9 @@ A DLL of [Susi Core](https://github.com/seanballais/susi-core) is also required.
 
 The app is built as a packaged application. Based on experience, this was the easiest way to build Susi while also using WinUI 3. This means that deployment is primarily done through MSIX. Packaging our app into an MSIX package is currently performed through Visual Studio tools (as shown below). If you want to distribute a version of Susi GUI (which is allowed by the [license](/LICENSE.md) of the app), it is recommended that you also do the same procedure. Distribution of the MSIX package will differ based on how it will be distributed. Please refer to [Microsoft's documentation](https://learn.microsoft.com/en-us/windows/msix/package/packaging-uwp-apps) for more information on that regard.
 
-![Creating an MSIX package for Susi is currently done through Visual Studio tools.](docs/screenshots/dev-deployment-app-packages.png)
+<div style="text-align: center;">
+    <img alt="Creating an MSIX package for Susi is currently done through Visual Studio tools." width="100%" src="docs/screenshots/dev-deployment-app-packages.png">
+</div>
 
 _Creating an MSIX package for Susi is currently done through Visual Studio tools._
 
