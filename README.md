@@ -13,10 +13,17 @@ Susi fully supports Windows 11, but has partial support for Windows 10. Only fil
 Susi is composed of two main components: (a) Susi GUI, and (b) Susi Core. Susi GUI is the GUI component of the app (this repository holds the code for the Windows version), while [Susi Core](https://github.com/seanballais/susi-core) is where most of the major operations, such as encryption and decryption, are done.
 
 ## Built With
-Susi GUI is built with C# and a small, but important, component in C++. Susi Core is built completely in Rust. The installer for Susi GUI is built with [InnoSetup](https://jrsoftware.org/isinfo.php).
+Susi GUI is built with C# (.NET 8 and WinUI 3) and a small, but important, component in C++. Susi Core is built completely in Rust. The installer for Susi GUI is built with [InnoSetup](https://jrsoftware.org/isinfo.php).
 
 ## Development
-If you are developing 
+Due to personal time constraints, a complete documentation on how to work on this project will not be available. However, the basic requirements are Visual Studio 2022, .NET 8 SDK, and Windows App SDK 1.5.
+
+A DLL of [Susi Core](https://github.com/seanballais/susi-core) is also required. It must be compiled, and the resulting DLL (`susi_core.dll`) and its accompanying `.lib` file (`susi_core.dll.lib`) must be added to the `susi-gui-windows` C# project (stored in the inner `susi-gui-windows/` folder) of this app's solution. The DLL must be compiled in debug mode during development, but it must be compiled in release mode when you are working towards a distributable copy of Susi. You must also set the DLL file's "Copy to Output Directory" property in the C# project to "Copy if newer", when editing it via Visual Studio, or `PreserveNewest`, when directly editing the C# project file.
+
+The app is built as a packaged application. Based on experience, this was the easiest way to build Susi while also using WinUI 3. This means that deployment is primarily done through MSIX. Packaging our app into an MSIX package is currently performed through Visual Studio tools (as shown below). If you want to distribute a version of Susi GUI (which is allowed by the [license](/LICENSE.md) of the app), it is recommended that you also do the same procedure. Distribution of the MSIX package will differ based on how it will be distributed. Please refer to [Microsoft's documentation](https://learn.microsoft.com/en-us/windows/msix/package/packaging-uwp-apps) for more information on that regard.
+
+![Creating an MSIX package for Susi is currently done through Visual Studio tools.](docs/screenshots/dev-deployment-app-packages.png)
+_Creating an MSIX package for Susi is currently done through Visual Studio tools._
 
 ## Installation
 Susi GUI is exported as an MSIX package. However, it depends on the latest Visual C++ 2022 Redistributable, .NET 8 Desktop Runtime, and Windows App SDK Runtime. A certificate is also required to allow sideloading/installing the app. These steps are cumbersome for users. So, to make the installation process easy, we are providing a setup file that is a chain installer. It does all the aforementioned steps on the behalf of the user.
