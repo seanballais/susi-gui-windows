@@ -2,9 +2,11 @@
 
 ![A screenshot of Susi.](docs/screenshots/app-screenshot.png)
 
-Susi is a utitlity app by [Sean Ballais](https://seanballais.com) that lets you encrypt (and decrypt) files to protect them from unauthorized parties. This is considered to be alpha software, so use this at your own risk.
+Susi is a utitlity app by [Sean Ballais](https://seanballais.com) that lets you encrypt (and decrypt) files to protect them from unauthorized parties. This is considered to be alpha software, so **use this at your own risk**. **No warranty** is provided with this software.
 
-![Susi Demonstration](docs/app-demo.gif)
+https://github.com/seanballais/susi-gui-windows/assets/7175885/dfb927b5-2fe2-48f3-bc62-6c122612a579
+
+_A demonstration of Susi._
 
 ## Supported Platforms
 Susi fully supports Windows 11, but has partial support for Windows 10. Only file unlocking/decryption is supported in Windows 10 at the moment. Additionally, only 64-bit versions of the aformentioned operating systems are supported.
@@ -23,16 +25,21 @@ A DLL of [Susi Core](https://github.com/seanballais/susi-core) is also required.
 The app is built as a packaged application. Based on experience, this was the easiest way to build Susi while also using WinUI 3. This means that deployment is primarily done through MSIX. Packaging our app into an MSIX package is currently performed through Visual Studio tools (as shown below). If you want to distribute a version of Susi GUI (which is allowed by the [license](/LICENSE.md) of the app), it is recommended that you also do the same procedure. Distribution of the MSIX package will differ based on how it will be distributed. Please refer to [Microsoft's documentation](https://learn.microsoft.com/en-us/windows/msix/package/packaging-uwp-apps) for more information on that regard.
 
 ![Creating an MSIX package for Susi is currently done through Visual Studio tools.](docs/screenshots/dev-deployment-app-packages.png)
+
 _Creating an MSIX package for Susi is currently done through Visual Studio tools._
 
 ## Installation
+> **NOTE**: This section assumes that you are using the installer provided in [Sean Ballais's repository for Susi GUI (Windows)](https://github.com/seanballais/susi-gui-windows). The installation procedure for other distributions of Susi may differ.
+
 Susi GUI is exported as an MSIX package. However, it depends on the latest Visual C++ 2022 Redistributable, .NET 8 Desktop Runtime, and Windows App SDK Runtime. A certificate is also required to allow sideloading/installing the app. These steps are cumbersome for users. So, to make the installation process easy, we are providing a setup file that is a chain installer. It does all the aforementioned steps on the behalf of the user.
 
 You can simply grab a setup file from the [Releases](https://github.com/seanballais/susi-gui-windows/releases) page. Once you have a setup file, simply run it and follow the steps. You don't have to do much to install it! The demo below shows the installation process. Note that this is shortened since the dependencies were already instaleld.
 
-![Installation Demo](docs/app-installation-demo.gif)
+https://github.com/seanballais/susi-gui-windows/assets/7175885/3ca1e26c-efc9-4fe2-aed3-f4cfc4bf6e11
 
-We recommend restarting your machine, however, once the installation is done, so that our shell extension to the File Explorer gets loaded in. Alternatively, you can just restart Explorer from the Task Manager.
+_A demonstration on installing Susi in Windows._
+
+We recommend restarting your machine, however, once the installation is done, so that our shell extension to the Windows Explorer gets loaded in. Alternatively, you can just restart Windows Explorer from the Task Manager.
 
 One important thing to note is that Susi is installed using MSIX. So, it will be installed inside `C:\Program Files\WindowsApps`.
 
@@ -41,7 +48,9 @@ Beware that the app and installer are both alpha software. So, again, use at you
 ### Uninstallation
 Uninstallation of Susi is simply done by uninstalling the app from the Start Menu or the Settings app.
 
+https://github.com/seanballais/susi-gui-windows/assets/7175885/c7798475-c286-4a50-91bc-fe9fa0c43897
 
+_Uninstalling Susi in Windows._
 
 However, this only removes the app itself. You will have to manually uninstall the dependencies if you want them off of your machine. We don't necessarily recommend that since other apps may already be dependending on them.
 
@@ -54,10 +63,12 @@ The certificate for the app will still remain unless removed manually. You can r
 
 You may also view the demo below to learn how to remove the certificate.
 
+https://github.com/seanballais/susi-gui-windows/assets/7175885/28afeada-90bf-4655-ae32-07951c9a16fa
 
+_Removing the certificate that was added during the installation of Susi._
 
 ## Using Susi
-Susi provides two features -- encryption _and_ decryption of files. The app encrypts to and decrypts from a custom Susi Encrypted File (a `.ssef` file). It does not support any other encryption formats. You may check [Susi Specifications](#susi-specifications) for details on the custom `.ssef` file format.
+Susi provides two features -- encryption _and_ decryption of files, both of which may also be referred to as "locking" and "unlocking" files, respectively. The app encrypts to and decrypts from a custom Susi Encrypted File (a `.ssef` file). It does not support any other encryption formats. You may check [Susi Specifications](#susi-specifications) for details on the custom `.ssef` file format.
 
 ### Encryption
 Encrypting a file with Susi is easy. The following steps will guide you how to encrypt a file.
@@ -69,7 +80,9 @@ Encrypting a file with Susi is easy. The following steps will guide you how to e
 
 The following video provides a visual demonstration on how to encrypt a file with Susi.
 
+https://github.com/seanballais/susi-gui-windows/assets/7175885/76ed61f2-e573-4aa9-af5d-f44eabbf3a3d
 
+_Encrypting/Locking a file with Susi._
 
 ### Decryption
 Decrypting a Susi Encrypted File with Susi is easy as well. Remember that Susi can only decrpyt a Susi Encrypted File (`.ssef` file). The following steps will guide you how to decrpyt a file.
@@ -80,7 +93,9 @@ Decrypting a Susi Encrypted File with Susi is easy as well. Remember that Susi c
 
 The following video provides a visual demonstration on how to decrypt a Susi Encrypted File with Susi.
 
+https://github.com/seanballais/susi-gui-windows/assets/7175885/0b22f642-1928-4b06-8d02-afa4e9670fdc
 
+_Decrypting/Unlocking a Susi Encrypted File._
 
 ### Remarks
 Make sure you remember the password you set for a file when you encrypt it. You will **not** be able to decrypt it without the correct password. Additionally, note that a Susi Encrypted File is portable and can be renamed. However, upon decryption, it will revert back to its original file name.
