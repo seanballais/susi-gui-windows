@@ -16,7 +16,7 @@ Susi is composed of two main components: (a) Susi GUI, and (b) Susi Core. Susi G
 Susi GUI is built with C# (.NET 8 and WinUI 3) and a small, but important, component in C++. Susi Core is built completely in Rust. The installer for Susi GUI is mostly built with [InnoSetup](https://jrsoftware.org/isinfo.php), with an internal script written in PowerShell.
 
 ## Development
-Due to personal time constraints, a complete documentation on how to work on this project will not be available. However, the basic requirements are Visual Studio 2022, .NET 8 SDK, and Windows App SDK 1.5.
+Due to personal time constraints, a complete documentation on how to work on this project will not be available. However, the basic requirements are Visual Studio 2022, the .NET 8 SDK, and the Windows App SDK 1.5.
 
 A DLL of [Susi Core](https://github.com/seanballais/susi-core) is also required. It must be compiled, and the resulting DLL (`susi_core.dll`) and its accompanying `.lib` file (`susi_core.dll.lib`) must be added to the `susi-gui-windows` C# project (stored in the inner `susi-gui-windows/` folder) of this app's solution. The DLL must be compiled in debug mode during development, but it must be compiled in release mode when you are working towards a distributable copy of Susi. You must also set the DLL file's "Copy to Output Directory" property in the C# project to "Copy if newer", when editing it via Visual Studio, or `PreserveNewest`, when directly editing the C# project file.
 
