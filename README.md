@@ -79,7 +79,7 @@ The following video provides a visual demonstration on how to decrypt a Susi Enc
 Make sure you remember the password you set for a file when you encrypt it. You will **not** be able to decrypt it without the correct password. Additionally, note that a Susi Encrypted File is portable and can be renamed. However, upon decryption, it will revert back to its original file name.
 
 ## Susi Software Specifications
-Software specifications for Susi have been written to guide us with the development of the project. It also contains the specifications of the file format of a Susi Encrypted File (`.ssef`). If you are interested in reading it or learning about the file format, you may obtain and read the latest specifications from the [software specifications's GitHub repository](https://github.com/seanballais/susi-software-specs/releases).
+Software specifications for Susi have been written to guide us with the development of the project. It also contains the specifications of the file format of a Susi Encrypted File (`.ssef`). If you are interested in reading it or learning about the file format, you may obtain and read the latest specifications from the ["Releases" page of the software specifications's repository](https://github.com/seanballais/susi-software-specs/releases).
 
 ## License
 This project, Susi GUI (for Windows), is licensed under the GNU General Public License v3. See [`LICENSE.md`](/LICENSE.md) for details.
