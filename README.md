@@ -108,7 +108,7 @@ Software specifications for Susi have been written to guide us with the developm
 ## License
 This project, Susi GUI (for Windows), is licensed under the GNU General Public License v3. See [`LICENSE.md`](/LICENSE.md) for details.
 
-Some parts of the app was based on third-party code. See [`THIRD-PARTY-LICENSES.txt`](/THIRD-PARTY-LICENSES.txt) for details. Some code used in this project are based from online sources, such as but not limited to blogs and [StackOverflow](https://stackoverflow.com) answers. The links to such sources are included in the individual files with code based off of such sources.
+Some parts of the app was based on third-party code. See [`THIRD-PARTY-LICENSES.txt`](/THIRD-PARTY-LICENSES.txt) for details. Some code used in this project are based on online sources, such as but not limited to blogs and [StackOverflow](https://stackoverflow.com) answers. The links to such sources are included in the individual files with code based off of such sources.
 
 ## Contact
 Sean Francis N. Ballais - [@seanballais](https://twitter.com/seanballais) - [sean@seanballais.com](mailto:sean@seanballais.com)
